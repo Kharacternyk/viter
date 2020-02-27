@@ -1,8 +1,6 @@
 #!/bin/python3
 
-import gi
-
-from gi.repository import Gtk, Vte, GLib, Pango
+from gi.repository import Gtk, Vte, GLib
 
 
 class Terminal(Vte.Terminal):
