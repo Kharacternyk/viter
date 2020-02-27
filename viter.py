@@ -1,6 +1,6 @@
 #!/bin/python3
 
-from gi.repository import Gtk, Vte, GLib
+from gi.repository import Gtk, Gdk, Vte, GLib, Pango
 
 
 class Terminal(Vte.Terminal):
@@ -16,7 +16,7 @@ class Terminal(Vte.Terminal):
             None,
             -1,
         )
-
+        self.set_font(Pango.FontDescription("Monospace 12.5"))
 
 class Window(Gtk.Window):
     def __init__(self, terminal):
@@ -27,5 +27,5 @@ class Window(Gtk.Window):
 
 
 if __name__ == "__main__":
-    Window(Terminal(["/bin/python"]))
+    Window(Terminal(["/bin/bash"]))
     Gtk.main()
