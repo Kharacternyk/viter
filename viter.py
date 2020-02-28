@@ -49,10 +49,22 @@ class Window(Gtk.Window):
 
         self.show_all()
 
+def read_config():
+    if "XDG_CONFIG_HOME" in os.environ:
+        config_dir = os.environ["XDG_CONFIG_HOME"]
+    else:
+        config_dir = os.environ["HOME"] + "/.config"
+
+    path = config_dir + "/viter/viterrc.py"
+    if os.path.isfile(path):
+        config_file = open(path, "r")
+        eval(config_file.read())
+ 
 
 if __name__ == "__main__":
     child_argv = sys.argv[1:]
     if child_argv == []:
         child_argv = [os.environ["SHELL"]]
     window = Window(Terminal(child_argv))
+    read_config()
     Gtk.main()
