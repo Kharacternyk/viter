@@ -27,19 +27,25 @@ class Terminal(Vte.Terminal):
 
 
 class Window(Gtk.Window):
+    def command_handler(self, command_line):
+        command = command_line.get_text()
+        eval(command)
+
     def __init__(self, terminal):
         Gtk.Window.__init__(self, title="viter")
         self.connect("delete_event", Gtk.main_quit)
 
-        box = Gtk.VBox()
-        self.add(box)
-        box.pack_start(terminal, True, True, 0)
+        self.terminal = terminal
+        self.box = Gtk.VBox()
+        self.add(self.box)
+        self.box.pack_start(self.terminal, True, True, 0)
 
-        command_line = Gtk.Entry(placeholder_text="sample text")
+        self.command_line = Gtk.Entry(placeholder_text="sample text")
+        self.command_line.connect("activate", self.command_handler)
         # `override_font` is deprecated.
-        # Nothing like this is exposed instead though.
-        command_line.override_font(Pango.FontDescription("Monospace 12.5"))
-        box.pack_start(command_line, False, True, 0)
+        # Nothing like it is exposed instead though.
+        self.command_line.override_font(Pango.FontDescription("Monospace 12.5"))
+        self.box.pack_start(self.command_line, False, True, 0)
 
         self.show_all()
 
@@ -48,6 +54,5 @@ if __name__ == "__main__":
     child_argv = sys.argv[1:]
     if child_argv == []:
         child_argv = [os.environ["SHELL"]]
-    term = Terminal(child_argv)
-    wind = Window(term)
+    window = Window(Terminal(child_argv))
     Gtk.main()
