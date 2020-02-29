@@ -46,12 +46,17 @@ class Window(Gtk.Window):
         except Exception as err:
             command_line.set_text(str(err))
 
+    def movement_handler(self, terminal):
+        x, y = terminal.get_cursor_position()
+        self.command_line.set_placeholder_text(str((x, y)))
+
     def __init__(self, terminal_shell_argv):
         Gtk.Window.__init__(self, title="viter")
         self.connect("delete_event", Gtk.main_quit)
         self.connect("key_press_event", self.key_press_handler)
 
         self.terminal = Terminal(terminal_shell_argv)
+        self.terminal.connect("cursor_moved", self.movement_handler)
 
         self.box = Gtk.VBox()
         self.add(self.box)
