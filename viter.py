@@ -3,12 +3,15 @@
 import sys
 import os
 import gi
+import enum
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("Vte", "2.91")
 
 # We import more than we actually use so that more things are exposed to user configs.
 from gi.repository import Gtk, Vte, GLib, Pango, Gdk  # noqa E402
+
+Mode = enum.Enum("Mode", ["NORMAL", "DETACHED"])
 
 
 class Terminal(Vte.Terminal):
@@ -34,9 +37,14 @@ class Window(Gtk.Window):
         ):
             if self.command_line.is_visible():
                 self.command_line.hide()
+                self.mode = Mode.NORMAL
             else:
                 self.command_line.show()
-                self.command_line.grab_focus()
+                self.mode = Mode.DETACHED
+            return True
+
+        if self.mode == Mode.DETACHED and event.keyval == Gdk.KEY_colon:
+            self.command_line.grab_focus()
             return True
 
     def command_handler(self, command_line):
@@ -74,6 +82,9 @@ class Window(Gtk.Window):
         self.synchronize_appearance()
 
         self.show_all()
+
+        self.command_line.hide()
+        self.mode = Mode.NORMAL
 
 
 def read_config():
