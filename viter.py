@@ -61,6 +61,7 @@ class Window(Gtk.Window):
         # `override_font` is deprecated.
         # Nothing like it is exposed instead though.
         self.command_line.override_font(self.terminal.get_font())
+
         self.box.pack_start(self.command_line, False, True, 0)
 
         self.show_all()
@@ -75,7 +76,7 @@ def read_config():
     path = config_dir + "/viter/viterrc.py"
     if os.path.isfile(path):
         config_file = open(path, "r")
-        eval(config_file.read())
+        exec(config_file.read())
 
 
 if __name__ == "__main__":
