@@ -37,6 +37,7 @@ class Window(Gtk.Window):
             else:
                 self.command_line.show()
                 self.command_line.grab_focus()
+            return True
 
     def command_handler(self, command_line):
         command = command_line.get_text()
