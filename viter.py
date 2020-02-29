@@ -30,6 +30,18 @@ class Terminal(Vte.Terminal):
 
 
 class Window(Gtk.Window):
+    def handle_detached_key_press(self, event):
+        if event.keyval == Gdk.KEY_colon:
+            if not self.command_line.has_focus():
+                self.command_line.grab_focus()
+                Gtk.Entry.do_insert_at_cursor(self.command_line, ":")
+                return True
+        if event.keyval == Gdk.KEY_slash:
+            if not self.command_line.has_focus():
+                self.command_line.grab_focus()
+                Gtk.Entry.do_insert_at_cursor(self.command_line, "/")
+                return True
+
     def key_press_handler(self, widget, event):
         if (
             event.keyval == Gdk.KEY_space
@@ -43,16 +55,19 @@ class Window(Gtk.Window):
                 self.mode = Mode.DETACHED
             return True
 
-        if self.mode == Mode.DETACHED and event.keyval == Gdk.KEY_colon:
-            self.command_line.grab_focus()
-            return True
+        if self.mode == Mode.DETACHED:
+            return self.handle_detached_key_press(event)
 
     def command_handler(self, command_line):
         command = command_line.get_text()
-        try:
-            eval(command)
-        except Exception as err:
-            command_line.set_text(str(err))
+        if command[0] == ":":
+            try:
+                eval(command[1:])
+            except Exception as err:
+                command_line.set_text(str(err))
+        elif command[0] == "/":
+            # TODO search.
+            pass
 
     def movement_handler(self, terminal):
         x, y = terminal.get_cursor_position()
