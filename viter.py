@@ -50,6 +50,11 @@ class Window(Gtk.Window):
         x, y = terminal.get_cursor_position()
         self.command_line.set_placeholder_text(str((x, y)))
 
+    def synchronize_appearance(self):
+        # `override_font` is deprecated.
+        # Nothing like it is exposed instead though.
+        self.command_line.override_font(self.terminal.get_font())
+
     def __init__(self, terminal_shell_argv):
         Gtk.Window.__init__(self, title="viter")
         self.connect("delete_event", Gtk.main_quit)
@@ -64,11 +69,9 @@ class Window(Gtk.Window):
 
         self.command_line = Gtk.Entry(placeholder_text="sample text")
         self.command_line.connect("activate", self.command_handler)
-        # `override_font` is deprecated.
-        # Nothing like it is exposed instead though.
-        self.command_line.override_font(self.terminal.get_font())
-
         self.box.pack_start(self.command_line, False, True, 0)
+
+        self.synchronize_appearance()
 
         self.show_all()
 
