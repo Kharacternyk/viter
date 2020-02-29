@@ -73,7 +73,7 @@ class Window(Gtk.Window):
         x, y = terminal.get_cursor_position()
         self.command_line.set_placeholder_text(str((x, y)))
 
-    def synchronize_appearance(self):
+    def derive_command_line_appearance(self):
         # `override_font` is deprecated.
         # Nothing like it is exposed instead though.
         self.command_line.override_font(self.terminal.get_font())
@@ -94,7 +94,7 @@ class Window(Gtk.Window):
         self.command_line.connect("activate", self.command_handler)
         self.box.pack_start(self.command_line, False, True, 0)
 
-        self.synchronize_appearance()
+        self.derive_command_line_appearance()
 
         self.show_all()
 
