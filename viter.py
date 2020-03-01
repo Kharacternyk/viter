@@ -73,9 +73,12 @@ class Window(Gtk.Window):
             # TODO search.
             pass
 
-    def movement_handler(self, terminal):
-        x, y = terminal.get_cursor_position()
-        self.command_line.set_placeholder_text(str((x, y)))
+    def get_status_line_string(self):
+        x, y = self.terminal.get_cursor_position()
+        return f"[{x}:{y}]"
+
+    def update_status_line(self):
+        self.command_line.set_placeholder_text(self.get_status_line_string())
 
     def derive_command_line_appearance(self):
         # `override_font` is deprecated.
@@ -93,13 +96,13 @@ class Window(Gtk.Window):
         self.connect("key_press_event", self.key_press_handler)
 
         self.terminal = Terminal(terminal_shell_argv)
-        self.terminal.connect("cursor_moved", self.movement_handler)
+        self.terminal.connect("cursor_moved", lambda a: self.update_status_line())
 
         self.box = Gtk.VBox()
         self.add(self.box)
         self.box.pack_start(self.terminal, True, True, 0)
 
-        self.command_line = Gtk.Entry(placeholder_text="sample text")
+        self.command_line = Gtk.Entry()
         self.command_line.connect("activate", self.command_handler)
         self.command_line.connect("key_press_event", self.leave_command_line_on_escape)
         self.command_line.connect(
