@@ -30,17 +30,20 @@ class Terminal(Vte.Terminal):
 
 
 class Window(Gtk.Window):
+    def prepare_command_line(self, text):
+        self.command_line.grab_focus()
+        Gtk.Entry.do_insert_at_cursor(self.command_line, text)
+
+    def set_default_key_map(self):
+        self.key_map = {
+            Gdk.KEY_colon: (lambda: self.prepare_command_line(":")),
+            Gdk.KEY_slash: (lambda: self.prepare_command_line("/")),
+        }
+
     def handle_detached_key_press(self, event):
-        if event.keyval == Gdk.KEY_colon:
-            if not self.command_line.has_focus():
-                self.command_line.grab_focus()
-                Gtk.Entry.do_insert_at_cursor(self.command_line, ":")
-                return True
-        if event.keyval == Gdk.KEY_slash:
-            if not self.command_line.has_focus():
-                self.command_line.grab_focus()
-                Gtk.Entry.do_insert_at_cursor(self.command_line, "/")
-                return True
+        if event.keyval in self.key_map:
+            self.key_map[event.keyval]()
+            return True
 
     def key_press_handler(self, widget, event):
         if (
@@ -100,6 +103,7 @@ class Window(Gtk.Window):
 
         self.command_line.hide()
         self.mode = Mode.NORMAL
+        self.set_default_key_map()
 
 
 def read_config():
