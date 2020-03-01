@@ -43,7 +43,6 @@ class Window(Gtk.Window):
     def handle_detached_key_press(self, event):
         if event.keyval in self.key_map:
             self.key_map[event.keyval]()
-            return True
 
     def key_press_handler(self, widget, event):
         if (
@@ -59,7 +58,9 @@ class Window(Gtk.Window):
             return True
 
         if self.mode == Mode.DETACHED:
-            return self.handle_detached_key_press(event)
+            if not self.command_line.has_focus():
+                self.handle_detached_key_press(event)
+                return True
 
     def command_handler(self, command_line):
         command = command_line.get_text()
@@ -83,7 +84,6 @@ class Window(Gtk.Window):
 
     def leave_command_line_on_escape(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
-            self.command_line.set_text("")
             self.terminal.grab_focus()
             return True
 
@@ -102,6 +102,9 @@ class Window(Gtk.Window):
         self.command_line = Gtk.Entry(placeholder_text="sample text")
         self.command_line.connect("activate", self.command_handler)
         self.command_line.connect("key_press_event", self.leave_command_line_on_escape)
+        self.command_line.connect(
+            "focus_out_event", lambda a, b: self.command_line.set_text("")
+        )
         self.box.pack_start(self.command_line, False, True, 0)
 
         self.derive_command_line_appearance()
