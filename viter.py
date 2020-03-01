@@ -112,6 +112,7 @@ def read_config():
     if os.path.isfile(path):
         config_file = open(path, "r")
         exec(config_file.read())
+        config_file.close()
 
 
 if __name__ == "__main__":
