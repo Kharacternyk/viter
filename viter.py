@@ -81,6 +81,12 @@ class Window(Gtk.Window):
         # Nothing like it is exposed instead though.
         self.command_line.override_font(self.terminal.get_font())
 
+    def leave_command_line_on_escape(self, widget, event):
+        if event.keyval == Gdk.KEY_Escape:
+            self.command_line.set_text("")
+            self.terminal.grab_focus()
+            return True
+
     def __init__(self, terminal_shell_argv):
         Gtk.Window.__init__(self, title="viter")
         self.connect("delete_event", Gtk.main_quit)
@@ -95,6 +101,7 @@ class Window(Gtk.Window):
 
         self.command_line = Gtk.Entry(placeholder_text="sample text")
         self.command_line.connect("activate", self.command_handler)
+        self.command_line.connect("key_press_event", self.leave_command_line_on_escape)
         self.box.pack_start(self.command_line, False, True, 0)
 
         self.derive_command_line_appearance()
