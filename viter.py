@@ -45,6 +45,7 @@ class Window(Gtk.Window):
                 vadjustment.set_value(vadjustment.get_lower())
         else:
             vadjustment.set_value(vadjustment.get_upper())
+        self.update_status_line()
 
     def set_default_key_map(self):
         self.key_map = {
@@ -91,11 +92,12 @@ class Window(Gtk.Window):
 
     def get_status_line_string(self):
         vadjustment = self.terminal.get_vadjustment()
-        scrollback_num = int(vadjustment.get_value())
+        terminal_top = int(vadjustment.get_value())
+        terminal_bottom = terminal_top + int(vadjustment.get_page_size())
         emsg = self.last_error_msg
         if emsg != "":
             emsg = "ERROR (" + emsg + ") "
-        return f"{emsg}[scrollback:{scrollback_num}]"
+        return f"{emsg}[{terminal_top}-{terminal_bottom}]"
 
     def update_status_line(self):
         self.command_line.set_placeholder_text(self.get_status_line_string())
