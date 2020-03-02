@@ -85,7 +85,14 @@ class Window(Gtk.Window):
         # Nothing like it is exposed instead though.
         self.command_line.override_font(self.terminal.get_font())
 
-    def leave_command_line_on_escape(self, widget, event):
+    def command_line_focus_in_handler(self, widget, event):
+        self.command_line.set_alignment(0)
+
+    def command_line_focus_out_handler(self, widget, event):
+        self.command_line.set_alignment(1)
+        self.command_line.set_text("")
+
+    def command_line_key_press_handler(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
             self.terminal.grab_focus()
             return True
@@ -104,10 +111,15 @@ class Window(Gtk.Window):
 
         self.command_line = Gtk.Entry()
         self.command_line.connect("activate", self.command_handler)
-        self.command_line.connect("key_press_event", self.leave_command_line_on_escape)
         self.command_line.connect(
-            "focus_out_event", lambda a, b: self.command_line.set_text("")
+            "key_press_event", self.command_line_key_press_handler
         )
+        self.command_line.connect(
+            "focus_out_event", self.command_line_focus_out_handler
+        )
+        self.command_line.connect("focus_in_event", self.command_line_focus_in_handler)
+        self.command_line.set_alignment(1)
+
         self.box.pack_start(self.command_line, False, True, 0)
 
         self.derive_command_line_appearance()
