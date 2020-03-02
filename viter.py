@@ -62,20 +62,25 @@ class Window(Gtk.Window):
                 self.handle_detached_key_press(event)
                 return True
 
-    def command_handler(self, command_line):
-        command = command_line.get_text()
+    def command_handler(self, widget):
+        command = self.command_line.get_text()
         if command[0] == ":":
             try:
                 eval(command[1:])
             except Exception as err:
-                command_line.set_text(str(err))
+                self.last_error_msg = str(err)
+            finally:
+                self.terminal.grab_focus()
         elif command[0] == "/":
             # TODO search.
             pass
 
     def get_status_line_string(self):
         x, y = self.terminal.get_cursor_position()
-        return f"[{x}:{y}]"
+        emsg = self.last_error_msg
+        if emsg != "":
+            emsg = "ERROR (" + emsg + ") "
+        return f"{emsg}[{x}:{y}]"
 
     def update_status_line(self):
         self.command_line.set_placeholder_text(self.get_status_line_string())
@@ -87,10 +92,12 @@ class Window(Gtk.Window):
 
     def command_line_focus_in_handler(self, widget, event):
         self.command_line.set_alignment(0)
+        self.last_error_msg = ""
 
     def command_line_focus_out_handler(self, widget, event):
         self.command_line.set_alignment(1)
         self.command_line.set_text("")
+        self.update_status_line()
 
     def command_line_key_press_handler(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
@@ -128,6 +135,7 @@ class Window(Gtk.Window):
 
         self.command_line.hide()
         self.mode = Mode.NORMAL
+        self.last_error_msg = ""
         self.set_default_key_map()
 
 
