@@ -38,13 +38,7 @@ class Window(Gtk.Window):
         vadjustment = self.terminal.get_vadjustment()
         current = vadjustment.get_value()
         desired = current + count
-        if desired < vadjustment.get_upper():
-            if desired > vadjustment.get_lower():
-                vadjustment.set_value(desired)
-            else:
-                vadjustment.set_value(vadjustment.get_lower())
-        else:
-            vadjustment.set_value(vadjustment.get_upper())
+        vadjustment.set_value(desired)
         self.update_status_line()
 
     def set_default_key_map(self):
@@ -97,7 +91,9 @@ class Window(Gtk.Window):
         emsg = self.last_error_msg
         if emsg != "":
             emsg = "ERROR (" + emsg + ") "
-        return f"{emsg}[{terminal_top}-{terminal_bottom}]"
+        return (
+            f"{emsg}[{terminal_top}-{terminal_bottom}] ({int(vadjustment.get_upper())})"
+        )
 
     def update_status_line(self):
         self.command_line.set_placeholder_text(self.get_status_line_string())
