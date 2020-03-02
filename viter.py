@@ -34,10 +34,24 @@ class Window(Gtk.Window):
         self.command_line.grab_focus()
         Gtk.Entry.do_insert_at_cursor(self.command_line, text)
 
+    def scroll_terminal(self, count):
+        vadjustment = self.terminal.get_vadjustment()
+        current = vadjustment.get_value()
+        desired = current + count
+        if desired < vadjustment.get_upper():
+            if desired > vadjustment.get_lower():
+                vadjustment.set_value(desired)
+            else:
+                vadjustment.set_value(vadjustment.get_lower())
+        else:
+            vadjustment.set_value(vadjustment.get_upper())
+
     def set_default_key_map(self):
         self.key_map = {
             Gdk.KEY_colon: (lambda: self.prepare_command_line(":")),
             Gdk.KEY_slash: (lambda: self.prepare_command_line("/")),
+            Gdk.KEY_j: (lambda: self.scroll_terminal(1)),
+            Gdk.KEY_k: (lambda: self.scroll_terminal(-1)),
         }
 
     def handle_detached_key_press(self, event):
