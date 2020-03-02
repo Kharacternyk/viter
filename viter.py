@@ -76,11 +76,12 @@ class Window(Gtk.Window):
             pass
 
     def get_status_line_string(self):
-        x, y = self.terminal.get_cursor_position()
+        vadjustment = self.terminal.get_vadjustment()
+        scrollback_num = int(vadjustment.get_value())
         emsg = self.last_error_msg
         if emsg != "":
             emsg = "ERROR (" + emsg + ") "
-        return f"{emsg}[{x}:{y}]"
+        return f"{emsg}[scrollback:{scrollback_num}]"
 
     def update_status_line(self):
         self.command_line.set_placeholder_text(self.get_status_line_string())
