@@ -2,19 +2,21 @@ win.term.set_audible_bell(False)
 win.term.set_font(Pango.FontDescription("Monospace 12.5"))
 win.derive_bar_appearance()
 
+_default_status_string_func = Window.get_status_string
 
-# We may define an utility fuction.
-# This one avoids some boilerplate involved with color definition in hex.
-# Viter doesn't use itself names that begin with an underscore.
+from datetime import datetime as _dt
+
+def _custom_status_string(window):
+    now = _dt.now().time()
+    return f"{_default_status_string_func(window)} |{now.hour}:{now.minute}|"
+
+Window.get_status_string = _custom_status_string
+
 def _c(string):
     color = Gdk.RGBA()
     color.parse("#" + string)
     return color
 
-
-# Attention!
-# This is a **light** palette that I use myself.
-# Do not accidentally burn your eyes at night.
 win.term.set_colors(
     _c("000000"),
     _c("FFFFFF"),

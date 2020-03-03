@@ -163,23 +163,21 @@ class Window(Gtk.Window):
         self.bar.override_font(self.term.get_font())
 
 
-def read_config():
-    if "XDG_CONFIG_HOME" in os.environ:
-        config_dir = os.environ["XDG_CONFIG_HOME"]
-    else:
-        config_dir = os.environ["HOME"] + "/.config"
-
-    path = config_dir + "/viter/viterrc.py"
-    if os.path.isfile(path):
-        config_file = open(path, "r")
-        exec(config_file.read())
-        config_file.close()
-
-
 if __name__ == "__main__":
     child_argv = sys.argv[1:]
     if child_argv == []:
         child_argv = [os.environ["SHELL"]]
     win = Window(child_argv)
-    read_config()
+
+    if "XDG_CONFIG_HOME" in os.environ:
+        config_dir = os.environ["XDG_CONFIG_HOME"]
+    else:
+        config_dir = os.environ["HOME"] + "/.config"
+
+    config_path = config_dir + "/viter/viterrc.py"
+    if os.path.isfile(config_path):
+        config_file = open(config_path, "r")
+        exec(config_file.read())
+        config_file.close()
+
     Gtk.main()
