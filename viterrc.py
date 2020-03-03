@@ -1,6 +1,6 @@
-window.terminal.set_audible_bell(False)
-window.terminal.set_font(Pango.FontDescription("Monospace 12.5"))
-window.derive_command_line_appearance()
+win.term.set_audible_bell(False)
+win.term.set_font(Pango.FontDescription("Monospace 12.5"))
+win.derive_bar_appearance()
 
 
 # We may define an utility fuction.
@@ -15,7 +15,7 @@ def _c(string):
 # Attention!
 # This is a **light** palette that I use myself.
 # Do not accidentally burn your eyes at night.
-window.terminal.set_colors(
+win.term.set_colors(
     _c("000000"),
     _c("FFFFFF"),
     [
