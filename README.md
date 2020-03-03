@@ -7,6 +7,7 @@ Viter starts up in **NORMAL** mode where it behaves just like any other terminal
 - Look at the bar at the bottom of window (you may configure it to show anything you want).
 - Press `:` to access the one-line Python interpreter and interact with Viter.
 - Press `y` or `Y` to copy some text.
-- Use any of the other features of Viter.
+- Use any of the other awesome features of Viter.
 - Press Ctrl+Space to switch back to **NORMAL** mode.
+
 You got the spirit, right? Vim users should feel themselves like at home.
