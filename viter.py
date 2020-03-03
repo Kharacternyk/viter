@@ -89,10 +89,7 @@ class Window(Gtk.Window):
             pass
 
     def key_press_handler(self, widget, event):
-        if (
-            event.keyval == Gdk.KEY_space
-            and event.state & Gdk.ModifierType.CONTROL_MASK > 0
-        ):
+        if self.is_mode_switching_requested(event):
             if self.bar.is_visible():
                 self.bar.hide()
                 self.mode = Mode.NORMAL
@@ -105,6 +102,12 @@ class Window(Gtk.Window):
             if not self.bar.has_focus():
                 self.handle_detached_key_press(event)
                 return True
+
+    def is_mode_switching_requested(self, event):
+        return (
+            event.keyval == Gdk.KEY_space
+            and event.state & Gdk.ModifierType.CONTROL_MASK > 0
+        )
 
     def handle_detached_key_press(self, event):
         if event.keyval in self.key_map:
