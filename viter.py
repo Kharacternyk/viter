@@ -34,11 +34,21 @@ class Window(Gtk.Window):
         self.bar.grab_focus()
         Gtk.Entry.do_insert_at_cursor(self.bar, text)
 
-    def scroll_terminal(self, count):
+    def scroll_terminal(self, line_count, page_count=0):
         vadjustment = self.term.get_vadjustment()
         current = vadjustment.get_value()
-        desired = current + count
+        desired = current + line_count + page_count * vadjustment.get_page_size()
         vadjustment.set_value(desired)
+        self.update_bar()
+
+    def scroll_terminal_to_top(self):
+        vadjustment = self.term.get_vadjustment()
+        vadjustment.set_value(vadjustment.get_lower())
+        self.update_bar()
+
+    def scroll_terminal_to_bottom(self):
+        vadjustment = self.term.get_vadjustment()
+        vadjustment.set_value(vadjustment.get_upper())
         self.update_bar()
 
     def set_default_key_map(self):
@@ -47,6 +57,10 @@ class Window(Gtk.Window):
             Gdk.KEY_slash: (lambda: self.prepare_bar("/")),
             Gdk.KEY_j: (lambda: self.scroll_terminal(1)),
             Gdk.KEY_k: (lambda: self.scroll_terminal(-1)),
+            Gdk.KEY_J: (lambda: self.scroll_terminal(0, 1)),
+            Gdk.KEY_K: (lambda: self.scroll_terminal(0, -1)),
+            Gdk.KEY_g: (lambda: self.scroll_terminal_to_top()),
+            Gdk.KEY_G: (lambda: self.scroll_terminal_to_bottom()),
         }
 
     def handle_detached_key_press(self, event):
@@ -145,6 +159,7 @@ class Window(Gtk.Window):
         self.bar.hide()
         self.mode = Mode.NORMAL
         self.last_error_msg = ""
+        self.key_queue = []
         self.set_default_key_map()
 
 
