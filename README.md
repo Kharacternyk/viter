@@ -10,4 +10,4 @@ Viter starts up in **NORMAL** mode where it behaves just like any other terminal
 - Use any of the other awesome features of Viter.
 - Press Ctrl+Space to switch back to **NORMAL** mode.
 
-You got the spirit, right? Vim users should feel themselves like at home.
+You got the spirit, right? Vim users should feel at home.
