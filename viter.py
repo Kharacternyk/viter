@@ -8,7 +8,6 @@ import enum
 gi.require_version("Gtk", "3.0")
 gi.require_version("Vte", "2.91")
 
-# We import more than we actually use so that more things are exposed to user configs.
 from gi.repository import Gtk, Vte, GLib, Pango, Gdk  # noqa E402
 
 Mode = enum.Enum("Mode", ["NORMAL", "DETACHED"])
