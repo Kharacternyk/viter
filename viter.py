@@ -55,10 +55,12 @@ class Window(Gtk.Window):
         self.show_all()
 
         self.bar.hide()
+        self.set_default_key_map()
+
         self.mode = Mode.NORMAL
         self.last_error_msg = ""
         self.key_queue = []
-        self.set_default_key_map()
+        self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
     def bar_focus_in_handler(self, widget, event):
         self.bar.set_alignment(0)
@@ -126,6 +128,8 @@ class Window(Gtk.Window):
             Gdk.KEY_K: (lambda: self.scroll_terminal(0, -1)),
             Gdk.KEY_g: (lambda: self.scroll_terminal_to_top()),
             Gdk.KEY_G: (lambda: self.scroll_terminal_to_bottom()),
+            Gdk.KEY_y: (lambda: self.yank_line(-1)),
+            Gdk.KEY_Y: (lambda: self.yank_line(0)),
         }
 
     def scroll_terminal(self, line_count, page_count=0):
@@ -144,6 +148,11 @@ class Window(Gtk.Window):
         vadjustment = self.term.get_vadjustment()
         vadjustment.set_value(vadjustment.get_upper())
         self.update_bar()
+
+    def yank_line(self, line_number):
+        text, attributes = self.term.get_text()
+        top_line = text.splitlines()[line_number].strip()
+        self.clipboard.set_text(top_line, -1)
 
     def get_status_string(self):
         vadjustment = self.term.get_vadjustment()
