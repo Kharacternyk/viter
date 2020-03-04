@@ -11,3 +11,23 @@ Viter starts up in **NORMAL** mode where it behaves just like any other terminal
 - Press `Escape` to switch back to **NORMAL** mode.
 
 You got the spirit, right? Vim users should feel at home.
+
+# Features
+- [x] Navigating the scrollback
+    - `j`: one line down
+    - `k`: one line up
+    - `J`: one page down
+    - `K`: one page up
+    - `g`: to the beginning
+    - `G`: to the end
+- [x] Search
+    - `/`+_pattern_+`Enter`: search for the first occurrence of _pattern_
+    - `n`: to the next occurrence of previously set _pattern_
+    - `N`: to the previous occurrence of previously set _pattern_
+- [ ] Clipboard
+    - [x] `y`: yank the last line
+    - [x] `Y`: yank the top line
+    - [ ] yank the search result
+    - [ ] copy/paste in **NORMAL** mode
+- [x] Command line
+    - `:` + _command_ + `Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
