@@ -26,6 +26,7 @@ class Terminal(Vte.Terminal):
             None,
             -1,
         )
+        self.search_set_wrap_around(True)
 
 
 class Window(Gtk.Window):
@@ -86,13 +87,14 @@ class Window(Gtk.Window):
             finally:
                 self.term.grab_focus()
         elif command[0] == "/":
-            # TODO search.
-            pass
+            self.search(command[1:])
+            self.term.grab_focus()
 
     def key_press_handler(self, widget, event):
         if self.mode == Mode.DETACHED:
-            if not self.bar.has_focus() and event.keyval in self.detached_mode_key_map:
-                self.detached_mode_key_map[event.keyval]()
+            if not self.bar.has_focus():
+                if event.keyval in self.detached_mode_key_map:
+                    self.detached_mode_key_map[event.keyval]()
                 return True
         else:
             if (
@@ -128,6 +130,8 @@ class Window(Gtk.Window):
             Gdk.KEY_y: (lambda: self.yank_line(-1)),
             Gdk.KEY_Y: (lambda: self.yank_line(0)),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
+            Gdk.KEY_n: (lambda: self.search_next()),
+            Gdk.KEY_N: (lambda: self.search_previous()),
         }
 
         self.normal_mode_key_map = {
@@ -155,6 +159,20 @@ class Window(Gtk.Window):
         text, attributes = self.term.get_text()
         top_line = text.splitlines()[line_number].strip()
         self.clipboard.set_text(top_line, -1)
+
+    def search(self, pattern):
+        PCRE2_MULTILINE = 0x00000400
+        regex = Vte.Regex.new_for_search(pattern, len(pattern), PCRE2_MULTILINE)
+        self.term.search_set_regex(regex, 0)
+        self.search_next()
+
+    def search_next(self):
+        self.term.search_find_next()
+        self.update_bar()
+
+    def search_previous(self):
+        self.term.search_find_previous()
+        self.update_bar()
 
     def get_status_string(self):
         vadjustment = self.term.get_vadjustment()
