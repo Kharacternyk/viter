@@ -37,6 +37,7 @@ class Window(Gtk.Window):
 
         self.term = Terminal(terminal_shell_argv)
         self.term.connect("cursor_moved", lambda a: self.update_bar())
+        self.term.connect("eof", lambda a: self.close())
 
         self.box = Gtk.VBox()
         self.add(self.box)
