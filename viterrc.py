@@ -1,6 +1,8 @@
 # Set some random options.
 win.term.set_audible_bell(False)
-win.term.set_font(Pango.FontDescription("Monospace 12.5"))
+
+from gi.repository import Pango as _pango
+win.term.set_font(_pango.FontDescription("Monospace 12.5"))
 
 # Make the bar (status line) to look consistent with window.
 win.derive_bar_appearance()
