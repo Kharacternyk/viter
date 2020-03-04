@@ -90,36 +90,33 @@ class Window(Gtk.Window):
             pass
 
     def key_press_handler(self, widget, event):
-        if self.is_mode_switching_requested(event):
-            if self.bar.is_visible():
-                self.bar.hide()
-                self.mode = Mode.NORMAL
-            else:
-                self.bar.show()
-                self.mode = Mode.DETACHED
-            return True
-
         if self.mode == Mode.DETACHED:
-            if not self.bar.has_focus():
-                self.handle_detached_key_press(event)
+            if not self.bar.has_focus() and event.keyval in self.detached_mode_key_map:
+                self.detached_mode_key_map[event.keyval]()
+                return True
+        else:
+            if (
+                event.state & Gdk.ModifierType.CONTROL_MASK > 0
+                and event.state & Gdk.ModifierType.SHIFT_MASK > 0
+                and event.keyval in self.normal_mode_key_map
+            ):
+                self.normal_mode_key_map[event.keyval]()
                 return True
 
-    def is_mode_switching_requested(self, event):
-        return (
-            event.keyval == Gdk.KEY_space
-            and event.state & Gdk.ModifierType.CONTROL_MASK > 0
-        )
+    def enter_normal_mode(self):
+        self.bar.hide()
+        self.mode = Mode.NORMAL
 
-    def handle_detached_key_press(self, event):
-        if event.keyval in self.key_map:
-            self.key_map[event.keyval]()
+    def enter_detached_mode(self):
+        self.bar.show()
+        self.mode = Mode.DETACHED
 
     def set_default_key_map(self):
         def prepare_bar(text):
             self.bar.grab_focus()
             Gtk.Entry.do_insert_at_cursor(self.bar, text)
 
-        self.key_map = {
+        self.detached_mode_key_map = {
             Gdk.KEY_colon: (lambda: prepare_bar(":")),
             Gdk.KEY_slash: (lambda: prepare_bar("/")),
             Gdk.KEY_j: (lambda: self.scroll_terminal(1)),
@@ -130,6 +127,11 @@ class Window(Gtk.Window):
             Gdk.KEY_G: (lambda: self.scroll_terminal_to_bottom()),
             Gdk.KEY_y: (lambda: self.yank_line(-1)),
             Gdk.KEY_Y: (lambda: self.yank_line(0)),
+            Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
+        }
+
+        self.normal_mode_key_map = {
+            Gdk.KEY_space: (lambda: self.enter_detached_mode()),
         }
 
     def scroll_terminal(self, line_count, page_count=0):

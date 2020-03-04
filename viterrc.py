@@ -46,4 +46,4 @@ win.term.set_colors(
 )
 
 # Map `q` to close while being in the detached mode.
-win.key_map[Gdk.KEY_q] = (lambda: win.close())
+win.detached_mode_key_map[Gdk.KEY_q] = (lambda: win.close())
