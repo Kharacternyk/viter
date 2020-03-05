@@ -14,27 +14,14 @@ Mode = enum.Enum("Mode", ["NORMAL", "DETACHED"])
 
 
 class Window(Gtk.Window):
-    def __init__(self, terminal_shell_argv):
+    def __init__(self, shell_argv):
         Gtk.Window.__init__(self, title="viter")
         self.connect("delete_event", Gtk.main_quit)
         self.connect("key_press_event", self.key_press_handler)
 
-        self.init_terminal(terminal_shell_argv)
-
-        self.box = Gtk.VBox()
-        self.add(self.box)
-        self.box.pack_start(self.term, True, True, 0)
-
-        self.bar = Gtk.Entry()
-        self.bar.connect("activate", self.command_handler)
-        self.bar.connect("key_press_event", self.bar_key_press_handler)
-        self.bar.connect("focus_out_event", self.bar_focus_out_handler)
-        self.bar.connect("focus_in_event", self.bar_focus_in_handler)
-        self.bar.set_alignment(1)
-
-        self.box.pack_start(self.bar, False, True, 0)
-
-        self.derive_bar_appearance()
+        self.init_term(shell_argv)
+        self.init_bar()
+        self.init_layout()
 
         self.show_all()
 
@@ -46,7 +33,7 @@ class Window(Gtk.Window):
         self.key_queue = []
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
-    def init_terminal(self, argv):
+    def init_term(self, argv):
         self.term = Vte.Terminal()
         self.term.spawn_async(
             Vte.PtyFlags.DEFAULT,
@@ -61,6 +48,21 @@ class Window(Gtk.Window):
         self.term.search_set_wrap_around(True)
         self.term.connect("cursor_moved", lambda a: self.update_bar())
         self.term.connect("eof", lambda a: self.close())
+
+    def init_bar(self):
+        self.bar = Gtk.Entry()
+        self.bar.connect("activate", self.command_handler)
+        self.bar.connect("key_press_event", self.bar_key_press_handler)
+        self.bar.connect("focus_out_event", self.bar_focus_out_handler)
+        self.bar.connect("focus_in_event", self.bar_focus_in_handler)
+        self.bar.set_alignment(1)
+        self.derive_bar_appearance()
+
+    def init_layout(self):
+        self.box = Gtk.VBox()
+        self.add(self.box)
+        self.box.pack_start(self.term, True, True, 0)
+        self.box.pack_start(self.bar, False, True, 0)
 
     def bar_focus_in_handler(self, widget, event):
         self.bar.set_alignment(0)
@@ -120,12 +122,12 @@ class Window(Gtk.Window):
         self.detached_mode_key_map = {
             Gdk.KEY_colon: (lambda: prepare_bar(":")),
             Gdk.KEY_slash: (lambda: prepare_bar("/")),
-            Gdk.KEY_j: (lambda: self.scroll_terminal(1)),
-            Gdk.KEY_k: (lambda: self.scroll_terminal(-1)),
-            Gdk.KEY_J: (lambda: self.scroll_terminal(0, 1)),
-            Gdk.KEY_K: (lambda: self.scroll_terminal(0, -1)),
-            Gdk.KEY_g: (lambda: self.scroll_terminal_to_top()),
-            Gdk.KEY_G: (lambda: self.scroll_terminal_to_bottom()),
+            Gdk.KEY_j: (lambda: self.scroll_term(1)),
+            Gdk.KEY_k: (lambda: self.scroll_term(-1)),
+            Gdk.KEY_J: (lambda: self.scroll_term(0, 1)),
+            Gdk.KEY_K: (lambda: self.scroll_term(0, -1)),
+            Gdk.KEY_g: (lambda: self.scroll_term_to_top()),
+            Gdk.KEY_G: (lambda: self.scroll_term_to_bottom()),
             Gdk.KEY_y: (lambda: self.yank_line(-1)),
             Gdk.KEY_Y: (lambda: self.yank_line(0)),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
@@ -137,19 +139,19 @@ class Window(Gtk.Window):
             Gdk.KEY_space: (lambda: self.enter_detached_mode()),
         }
 
-    def scroll_terminal(self, line_count, page_count=0):
+    def scroll_term(self, line_count, page_count=0):
         vadjustment = self.term.get_vadjustment()
         current = vadjustment.get_value()
         desired = current + line_count + page_count * vadjustment.get_page_size()
         vadjustment.set_value(desired)
         self.update_bar()
 
-    def scroll_terminal_to_top(self):
+    def scroll_term_to_top(self):
         vadjustment = self.term.get_vadjustment()
         vadjustment.set_value(vadjustment.get_lower())
         self.update_bar()
 
-    def scroll_terminal_to_bottom(self):
+    def scroll_term_to_bottom(self):
         vadjustment = self.term.get_vadjustment()
         vadjustment.set_value(vadjustment.get_upper())
         self.update_bar()
@@ -175,14 +177,12 @@ class Window(Gtk.Window):
 
     def get_status_string(self):
         vadjustment = self.term.get_vadjustment()
-        terminal_top = int(vadjustment.get_value())
-        terminal_bottom = terminal_top + int(vadjustment.get_page_size())
+        term_top = int(vadjustment.get_value())
+        term_bottom = term_top + int(vadjustment.get_page_size())
         emsg = self.last_error_msg
         if emsg != "":
             emsg = "ERROR (" + emsg + ") "
-        return (
-            f"{emsg}[{terminal_top}-{terminal_bottom}] ({int(vadjustment.get_upper())})"
-        )
+        return f"{emsg}[{term_top}-{term_bottom}] ({int(vadjustment.get_upper())})"
 
     def update_bar(self):
         self.bar.set_placeholder_text(self.get_status_string())
