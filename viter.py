@@ -29,7 +29,7 @@ class Window(Gtk.Window):
         self.set_default_key_map()
 
         self.mode = Mode.NORMAL
-        self.last_error_msg = ""
+        self.message = ""
         self.key_queue = []
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
@@ -66,7 +66,7 @@ class Window(Gtk.Window):
 
     def bar_focus_in_handler(self, widget, event):
         self.bar.set_alignment(0)
-        self.last_error_msg = ""
+        self.message = ""
 
     def bar_focus_out_handler(self, widget, event):
         self.bar.set_alignment(1)
@@ -84,7 +84,7 @@ class Window(Gtk.Window):
             try:
                 eval(command[1:])
             except Exception as err:
-                self.last_error_msg = str(err)
+                self.message = "FAILED COMMAND: " + str(err)
             finally:
                 self.term.grab_focus()
         elif command[0] == "/":
@@ -175,7 +175,7 @@ class Window(Gtk.Window):
             if lines != []:
                 self.clipboard.set_text(lines[-1].strip(), -1)
             else:
-                self.last_error_msg = "FAILED YANK: " + search_text
+                self.message = "FAILED YANK: " + search_text
 
     def search(self, pattern):
         PCRE2_MULTILINE = 0x00000400
@@ -195,10 +195,8 @@ class Window(Gtk.Window):
         vadjustment = self.term.get_vadjustment()
         term_top = int(vadjustment.get_value())
         term_bottom = term_top + int(vadjustment.get_page_size())
-        emsg = self.last_error_msg
-        if emsg != "":
-            emsg = "ERROR (" + emsg + ") "
-        return f"{emsg}[{term_top}-{term_bottom}] ({int(vadjustment.get_upper())})"
+        term_upper = int(vadjustment.get_upper())
+        return f"{self.message} [{term_top}-{term_bottom}] ({term_upper})"
 
     def update_bar(self):
         self.bar.set_placeholder_text(self.get_status_string())
