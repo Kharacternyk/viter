@@ -140,6 +140,8 @@ class Window(Gtk.Window):
 
         self.normal_mode_key_map = {
             Gdk.KEY_space: (lambda: self.enter_detached_mode()),
+            Gdk.KEY_C: (lambda: self.term.copy_clipboard_format(Vte.Format.TEXT)),
+            Gdk.KEY_V: (lambda: self.term.paste_clipboard()),
         }
 
     def scroll_term(self, line_count, page_count=0):
