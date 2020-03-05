@@ -115,9 +115,12 @@ class Window(Gtk.Window):
         self.mode = Mode.DETACHED
 
     def set_default_key_map(self):
-        def prepare_bar(text):
+        def prepare_bar(text_left, text_right=""):
             self.bar.grab_focus()
-            Gtk.Entry.do_insert_at_cursor(self.bar, text)
+            Gtk.Entry.do_insert_at_cursor(self.bar, text_left + text_right)
+            Gtk.Entry.do_move_cursor(
+                self.bar, Gtk.MovementStep.LOGICAL_POSITIONS, -len(text_right), False
+            )
 
         self.detached_mode_key_map = {
             Gdk.KEY_colon: (lambda: prepare_bar(":")),
@@ -128,7 +131,7 @@ class Window(Gtk.Window):
             Gdk.KEY_K: (lambda: self.scroll_term(0, -1)),
             Gdk.KEY_g: (lambda: self.scroll_term_to_top()),
             Gdk.KEY_G: (lambda: self.scroll_term_to_bottom()),
-            Gdk.KEY_y: (lambda: self.yank_line(-1)),
+            Gdk.KEY_y: (lambda: prepare_bar(':win.yank_line("', '")')),
             Gdk.KEY_Y: (lambda: self.yank_line(0)),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
             Gdk.KEY_n: (lambda: self.search_next()),
@@ -156,10 +159,23 @@ class Window(Gtk.Window):
         vadjustment.set_value(vadjustment.get_upper())
         self.update_bar()
 
-    def yank_line(self, line_number):
+    def yank_line(self, trait):
         text, attributes = self.term.get_text()
-        top_line = text.splitlines()[line_number].strip()
-        self.clipboard.set_text(top_line, -1)
+        if isinstance(trait, int):
+            line_number = trait
+            line = text.splitlines()[line_number].strip()
+            self.clipboard.set_text(line, -1)
+        elif isinstance(trait, str):
+            search_text = trait.strip()
+            lines = [
+                line
+                for line in text.splitlines()
+                if line.strip().startswith(search_text)
+            ]
+            if lines != []:
+                self.clipboard.set_text(lines[-1].strip(), -1)
+            else:
+                self.last_error_msg = "FAILED YANK: " + search_text
 
     def search(self, pattern):
         PCRE2_MULTILINE = 0x00000400

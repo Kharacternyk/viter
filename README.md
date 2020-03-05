@@ -25,7 +25,7 @@ You got the spirit, right? Vim users should feel at home.
     - `n`: to the next occurrence of previously set _pattern_
     - `N`: to the previous occurrence of previously set _pattern_
 - [ ] Clipboard
-    - [x] `y`: yank the last line
+    - [x] `y`: yank the line that starts with the given characters (not counting whitespace)
     - [x] `Y`: yank the top line
     - [ ] yank the search result
     - [ ] copy/paste in **NORMAL** mode
