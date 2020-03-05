@@ -206,6 +206,9 @@ class Window(Gtk.Window):
         # Nothing like it is exposed instead though.
         self.bar.override_font(self.term.get_font())
 
+    def print(self, obj):
+        self.message = str(obj)
+
 
 if __name__ == "__main__":
     child_argv = sys.argv[1:]
