@@ -13,31 +13,13 @@ from gi.repository import Gtk, Vte, GLib, Gdk  # noqa E402
 Mode = enum.Enum("Mode", ["NORMAL", "DETACHED"])
 
 
-class Terminal(Vte.Terminal):
-    def __init__(self, argv):
-        Vte.Terminal.__init__(self)
-        self.spawn_async(
-            Vte.PtyFlags.DEFAULT,
-            None,
-            argv,
-            None,
-            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-            None,
-            None,
-            -1,
-        )
-        self.search_set_wrap_around(True)
-
-
 class Window(Gtk.Window):
     def __init__(self, terminal_shell_argv):
         Gtk.Window.__init__(self, title="viter")
         self.connect("delete_event", Gtk.main_quit)
         self.connect("key_press_event", self.key_press_handler)
 
-        self.term = Terminal(terminal_shell_argv)
-        self.term.connect("cursor_moved", lambda a: self.update_bar())
-        self.term.connect("eof", lambda a: self.close())
+        self.init_terminal(terminal_shell_argv)
 
         self.box = Gtk.VBox()
         self.add(self.box)
@@ -63,6 +45,22 @@ class Window(Gtk.Window):
         self.last_error_msg = ""
         self.key_queue = []
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+
+    def init_terminal(self, argv):
+        self.term = Vte.Terminal()
+        self.term.spawn_async(
+            Vte.PtyFlags.DEFAULT,
+            None,
+            argv,
+            None,
+            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+            None,
+            None,
+            -1,
+        )
+        self.term.search_set_wrap_around(True)
+        self.term.connect("cursor_moved", lambda a: self.update_bar())
+        self.term.connect("eof", lambda a: self.close())
 
     def bar_focus_in_handler(self, widget, event):
         self.bar.set_alignment(0)
