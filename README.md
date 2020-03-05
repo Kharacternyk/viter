@@ -14,16 +14,16 @@ You got the spirit, right? Vim users should feel at home.
 
 # Features
 - Navigating the scrollback
-    - [x]`j`: one line down
-    - [x]`k`: one line up
-    - [x]`J`: one page down
-    - [x]`K`: one page up
-    - [x]`g`: to the beginning
-    - [x]`G`: to the end
+    - [x] `j`: one line down
+    - [x] `k`: one line up
+    - [x] `J`: one page down
+    - [x] `K`: one page up
+    - [x] `g`: to the beginning
+    - [x] `G`: to the end
 - Search
-    - [x]`/`+_pattern_+`Enter`: search for the first occurrence of _pattern_
-    - [x]`n`: to the next occurrence of previously set _pattern_
-    - [x]`N`: to the previous occurrence of previously set _pattern_
+    - [x] `/`+_pattern_+`Enter`: search for the first occurrence of _pattern_
+    - [x] `n`: to the next occurrence of previously set _pattern_
+    - [x] `N`: to the previous occurrence of previously set _pattern_
 - Clipboard
     - [x] `y`: yank the line that starts with the given characters (not counting whitespace)
     - [x] `Y`: yank the top line
