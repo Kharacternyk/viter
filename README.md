@@ -31,3 +31,13 @@ You got the spirit, right? Vim users should feel at home.
 - Command line
     - [x] `:`+_command_+`Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
     - [x] `e`+_expression_+`Enter`: evaluate the Python _expression_ and print it in the bar
+
+# Configuration
+Viter looks for the configuration file in the following order:
+- `$VITER_CONFIG`
+- `$XDG_CONFIG_HOME/viter/viterrc.py`
+- `$HOME/.config/viter/viterrc.py`
+
+The first path that exists is read and than passed to `exec` function just before Viter enters the main loop. The configuration file must be a valid script that is executable by the same Python version that runs Viter.
+
+An example of a valid configuration file is in this repository and is named `viterrc.py`. It is the configuration file that the author (@Kharacternyk) uses.
