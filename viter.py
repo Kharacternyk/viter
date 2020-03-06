@@ -80,15 +80,11 @@ class Window(Gtk.Window):
 
     def command_handler(self, widget):
         command = self.bar.get_text()
-        if command[0] == ":":
-            try:
-                eval(command[1:])
-            except Exception as err:
-                self.message = "FAILED COMMAND: " + str(err)
-            finally:
-                self.term.grab_focus()
-        elif command[0] == "/":
-            self.search(command[1:])
+        try:
+            exec(command)
+        except Exception as err:
+            self.message = "FAILED COMMAND: " + str(err)
+        finally:
             self.term.grab_focus()
 
     def key_press_handler(self, widget, event):
@@ -123,15 +119,15 @@ class Window(Gtk.Window):
             )
 
         self.detached_mode_key_map = {
-            Gdk.KEY_colon: (lambda: prepare_bar(":")),
-            Gdk.KEY_slash: (lambda: prepare_bar("/")),
+            Gdk.KEY_colon: (lambda: prepare_bar("")),
+            Gdk.KEY_slash: (lambda: prepare_bar('win.search("', '")')),
             Gdk.KEY_j: (lambda: self.scroll_term(1)),
             Gdk.KEY_k: (lambda: self.scroll_term(-1)),
             Gdk.KEY_J: (lambda: self.scroll_term(0, 1)),
             Gdk.KEY_K: (lambda: self.scroll_term(0, -1)),
             Gdk.KEY_g: (lambda: self.scroll_term_to_top()),
             Gdk.KEY_G: (lambda: self.scroll_term_to_bottom()),
-            Gdk.KEY_y: (lambda: prepare_bar(':win.yank_line("', '")')),
+            Gdk.KEY_y: (lambda: prepare_bar('win.yank_line("', '")')),
             Gdk.KEY_Y: (lambda: self.yank_line(0)),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
             Gdk.KEY_n: (lambda: self.search_next()),
