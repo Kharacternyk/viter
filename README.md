@@ -29,4 +29,5 @@ You got the spirit, right? Vim users should feel at home.
     - [x] `Y`: yank the top line
     - [x] `Ctrl+Shift+C`/`Ctrl+Shift+V`: copy/paste in **NORMAL** mode
 - Command line
-    - [x] `:` + _command_ + `Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
+    - [x] `:`+_command_+`Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
+    - [x] `e`+_expression_+`Enter`: evaluate the Python _expression_ and print it in the bar
