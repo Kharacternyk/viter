@@ -119,7 +119,7 @@ class Window(Gtk.Window):
             )
 
         self.detached_mode_key_map = {
-            Gdk.KEY_colon: (lambda: prepare_bar("")),
+            Gdk.KEY_colon: (lambda: self.bar.grab_focus()),
             Gdk.KEY_slash: (lambda: prepare_bar('win.search("', '")')),
             Gdk.KEY_j: (lambda: self.scroll_term(1)),
             Gdk.KEY_k: (lambda: self.scroll_term(-1)),
@@ -132,6 +132,7 @@ class Window(Gtk.Window):
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
             Gdk.KEY_n: (lambda: self.search_next()),
             Gdk.KEY_N: (lambda: self.search_previous()),
+            Gdk.KEY_e: (lambda: prepare_bar("win.echo(", ")")),
         }
 
         self.normal_mode_key_map = {
@@ -204,7 +205,7 @@ class Window(Gtk.Window):
         # Nothing like it is exposed instead though.
         self.bar.override_font(self.term.get_font())
 
-    def print(self, obj):
+    def echo(self, obj):
         self.message = str(obj)
 
 
