@@ -1,6 +1,19 @@
 # viter
 Viter is a terminal emulator written and expandable in Python. It features vim-like modes, keybindings and a status line. Viter is mainly inspired by [Termite](https://github.com/thestinger/termite) and uses GTK+ VTE widget as the backend (like Termite) though it doesn't require any patches to VTE ([unlike Termite](https://github.com/thestinger/termite#dependencies)).
 
+# Installation
+Viter requires GTK, VTE and Python with bindings for GTK. On Arch you may want to run this:
+```bash
+sudo pacman -Syu --needed python-gobject gtk3 vte3
+```
+Clone this repository. Run `viter.py` script to start Viter.
+```bash
+git clone https://github.com/Kharacternyk/viter
+cd viter
+python3 viter.py
+```
+You may want either to give `viter.py` executable rights and link it from somewhere in your PATH or create a .desktop file for it.
+
 # Usage
 Viter starts up in **NORMAL** mode where it behaves just like any other terminal emulator. Press `Ctrl+Shift+Space` to switch to **DETACHED** mode and then either:
 - Press `j` or `k` to access the scrollback.
@@ -38,6 +51,6 @@ Viter looks for the configuration file in the following order:
 - `$XDG_CONFIG_HOME/viter/viterrc.py`
 - `$HOME/.config/viter/viterrc.py`
 
-The first path that exists is read and than passed to `exec` function just before Viter enters the main loop. The configuration file must be a valid script that is executable by the same Python version that runs Viter.
+The first path that exists is read and then passed to `exec` function just before Viter enters the main loop. The configuration file must be a valid script that is executable by the same Python version that runs Viter.
 
 An example of a valid configuration file is in this repository and is named `viterrc.py`. It is the configuration file that the author (@Kharacternyk) uses.
