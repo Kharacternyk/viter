@@ -215,12 +215,15 @@ if __name__ == "__main__":
         child_argv = [os.environ["SHELL"]]
     win = Window(child_argv)
 
-    if "XDG_CONFIG_HOME" in os.environ:
-        config_dir = os.environ["XDG_CONFIG_HOME"]
+    if "VITER_CONFIG" in os.environ:
+        config_path = os.environ["VITER_CONFIG"]
     else:
-        config_dir = os.environ["HOME"] + "/.config"
+        if "XDG_CONFIG_HOME" in os.environ:
+            config_dir = os.environ["XDG_CONFIG_HOME"]
+        else:
+            config_dir = os.environ["HOME"] + "/.config"
+        config_path = config_dir + "/viter/viterrc.py"
 
-    config_path = config_dir + "/viter/viterrc.py"
     if os.path.isfile(config_path):
         config_file = open(config_path, "r")
         exec(config_file.read())
