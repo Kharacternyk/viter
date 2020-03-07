@@ -45,6 +45,23 @@ You got the spirit, right? Vim users should feel at home.
     - `:`+_command_+`Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
     - `e`+_expression_+`Enter`: evaluate the Python _expression_ and print it in the bar
 
+# Command interpreter
+The bar at the bottom of the screen is shown when the user is in **DETACHED** mode. It shows some information, such as the total amount of the scrollback, while being unfocused.
+
+After the user had typed some text into it and then pressed `Enter`, the entered text is executed by Viter using `exec` (a Python built-in).
+
+To interact with the window one should use the `win` global variable. Actually, the only thing that some keybindings do is inserting the call to one of the methods of `win` in the bar, for example:
+- `/` inserts `win.search("")` and places the cursor between "".
+- `y` inserts `win.yank_line("")` and places the cursor between "".
+- `e` inserts `win.echo()` and places the cursor between ().
+
+`win` is an instance of `Window` class that inherits `Gtk.Window`. The calls to the inherited methods are also perfectly valid, for example:
+- `win.set_title("Terminal")` to set the title of the window to _Terminal_.
+- `win.close()` to close the window.
+- `win.fullscreen()` to make the window fullscreen.
+
+`win` has `term` field that returns an instance of `Vte.Terminal`. See the Gtk documentation on the `Gtk.Window` and `Vte.Terminal` to see what is possible to do with them. See the source of Viter to see what methods are additionally provided to that of `Gtk.Window`.
+
 # Configuration
 Viter looks for the configuration file in the following order:
 - `$VITER_CONFIG`
