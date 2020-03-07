@@ -77,6 +77,9 @@ class Window(Gtk.Window):
         if event.keyval == Gdk.KEY_Escape:
             self.term.grab_focus()
             return True
+        if event.keyval == Gdk.KEY_Tab:
+            # This would be the place for the tab completion, if it existed.
+            return True
 
     def command_handler(self, widget):
         command = self.bar.get_text()
