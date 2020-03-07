@@ -25,25 +25,25 @@ Viter starts up in **NORMAL** mode where it behaves just like any other terminal
 
 You got the spirit, right? Vim users should feel at home.
 
-# Features
+# Keybindings
 - Navigating the scrollback
-    - [x] `j`: one line down
-    - [x] `k`: one line up
-    - [x] `J`: one page down
-    - [x] `K`: one page up
-    - [x] `g`: to the beginning
-    - [x] `G`: to the end
+    - `j`: one line down
+    - `k`: one line up
+    - `J`: one page down
+    - `K`: one page up
+    - `g`: to the beginning
+    - `G`: to the end
 - Search
-    - [x] `/`+_pattern_+`Enter`: search for the first occurrence of _pattern_
-    - [x] `n`: to the next occurrence of previously set _pattern_
-    - [x] `N`: to the previous occurrence of previously set _pattern_
+    - `/`+_pattern_+`Enter`: search for the first occurrence of _pattern_
+    - `n`: to the next occurrence of previously set _pattern_
+    - `N`: to the previous occurrence of previously set _pattern_
 - Clipboard
-    - [x] `y`+_characters_+`Enter`: yank the last line that starts with the _characters_ (not counting whitespace)
-    - [x] `Y`: yank the top line
-    - [x] `Ctrl+Shift+C`/`Ctrl+Shift+V`: copy/paste in **NORMAL** mode
+    - `y`+_characters_+`Enter`: yank the last line that starts with the _characters_ (not counting whitespace)
+    - `Y`: yank the top line
+    - `Ctrl+Shift+C`/`Ctrl+Shift+V`: copy/paste in **NORMAL** mode
 - Command line
-    - [x] `:`+_command_+`Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
-    - [x] `e`+_expression_+`Enter`: evaluate the Python _expression_ and print it in the bar
+    - `:`+_command_+`Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
+    - `e`+_expression_+`Enter`: evaluate the Python _expression_ and print it in the bar
 
 # Configuration
 Viter looks for the configuration file in the following order:
