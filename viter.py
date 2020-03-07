@@ -131,7 +131,7 @@ class Window(Gtk.Window):
             Gdk.KEY_g: (lambda: self.scroll_term_to_top()),
             Gdk.KEY_G: (lambda: self.scroll_term_to_bottom()),
             Gdk.KEY_y: (lambda: prepare_bar('win.yank_line("', '")')),
-            Gdk.KEY_Y: (lambda: self.yank_line(0)),
+            Gdk.KEY_Y: (lambda: self.yank_message()),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
             Gdk.KEY_n: (lambda: self.search_next()),
             Gdk.KEY_N: (lambda: self.search_previous()),
@@ -178,6 +178,9 @@ class Window(Gtk.Window):
                 self.clipboard.set_text(lines[-1].strip(), -1)
             else:
                 self.message = "FAILED YANK: " + search_text
+
+    def yank_message(self):
+        self.clipboard.set_text(self.message, -1)
 
     def search(self, pattern):
         PCRE2_MULTILINE = 0x00000400

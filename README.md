@@ -39,7 +39,7 @@ You got the spirit, right? Vim users should feel at home.
     - `N`: to the previous occurrence of previously set _pattern_
 - Clipboard
     - `y`+_characters_+`Enter`: yank the last line that starts with the _characters_ (not counting whitespace)
-    - `Y`: yank the top line
+    - `Y`: yank the message in the bar
     - `Ctrl+Shift+C`/`Ctrl+Shift+V`: copy/paste in **NORMAL** mode
 - Command line
     - `:`+_command_+`Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
