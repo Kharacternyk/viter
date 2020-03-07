@@ -86,7 +86,7 @@ class Window(Gtk.Window):
         try:
             exec(command)
         except Exception as err:
-            self.message = "FAILED COMMAND: " + str(err)
+            self.message = str(err)
         finally:
             self.term.grab_focus()
 
@@ -177,7 +177,7 @@ class Window(Gtk.Window):
             if lines != []:
                 self.clipboard.set_text(lines[-1].strip(), -1)
             else:
-                self.message = "FAILED YANK: " + search_text
+                self.message = "no such lines: " + search_text
 
     def yank_message(self):
         self.clipboard.set_text(self.message, -1)
