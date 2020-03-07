@@ -13,8 +13,8 @@ _default_status_string_func = Window.get_status_string
 from datetime import datetime as _dt
 
 def _custom_status_string(window):
-    now = _dt.now().time()
-    return f"{_default_status_string_func(window)} |{now.hour}:{now.minute}|"
+    now = _dt.now().time().strftime("%H:%M")
+    return f"{_default_status_string_func(window)} |{now}|"
 
 Window.get_status_string = _custom_status_string
 
