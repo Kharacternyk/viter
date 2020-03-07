@@ -28,6 +28,9 @@ Viter starts up in **NORMAL** mode where it behaves just like any other terminal
 You got the spirit, right? Vim users should feel at home.
 
 # Keybindings
+- Switching modes:
+    - `Escape`: switch to **NORMAL** mode
+    - `Ctrl-Shift-Space`: switch to **DETACHED** mode
 - Navigating the scrollback
     - `j`: one line down
     - `k`: one line up
