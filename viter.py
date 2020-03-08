@@ -58,6 +58,7 @@ class Window(Gtk.Window):
         self.bar.connect("focus_out_event", self.bar_focus_out_handler)
         self.bar.connect("focus_in_event", self.bar_focus_in_handler)
         self.bar.set_alignment(1)
+
         self.derive_bar_appearance()
 
     def init_layout(self):
@@ -113,6 +114,7 @@ class Window(Gtk.Window):
         self.mode = Mode.NORMAL
 
     def enter_detached_mode(self):
+        self.update_bar()
         self.bar.show()
         self.mode = Mode.DETACHED
 
