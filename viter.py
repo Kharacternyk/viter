@@ -47,9 +47,10 @@ class Window(Gtk.Window):
         )
         self.term.search_set_wrap_around(True)
         self.term.connect("eof", lambda a: self.close())
-        self.term.connect("text_scrolled", lambda a, b: self.update_bar())
 
         self.adjustment = self.term.get_vadjustment()
+        self.adjustment.connect("changed", lambda a: self.update_bar())
+        self.adjustment.connect("value_changed", lambda a: self.update_bar())
 
     def init_bar(self):
         self.bar = Gtk.Entry()
