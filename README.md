@@ -68,7 +68,7 @@ To interact with the window one should use the `win` global variable. Actually, 
 - `win.close()` to close the window.
 - `win.fullscreen()` to make the window fullscreen.
 
-`win` has `term` field that returns an instance of `Vte.Terminal`. See the Gtk documentation on the `Gtk.Window` and `Vte.Terminal` to see what is possible to do with them. See the source of Viter to see what methods are additionally provided to that of `Gtk.Window`.
+`win` has `term` field that returns an instance of `Vte.Terminal`. See the Gtk documentation on the [`Gtk.Window`](https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Window.html) and [`Vte.Terminal`](https://lazka.github.io/pgi-docs/Vte-2.91/classes/Terminal.html) to see what is possible to do with them. See the source of Viter to see what methods are additionally provided to that of `Gtk.Window`.
 
 # Configuration
 Viter looks for the configuration file in the following order:
