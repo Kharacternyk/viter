@@ -46,8 +46,10 @@ class Window(Gtk.Window):
             -1,
         )
         self.term.search_set_wrap_around(True)
-        self.term.connect("cursor_moved", lambda a: self.update_bar())
         self.term.connect("eof", lambda a: self.close())
+        self.term.connect("text_scrolled", lambda a, b: self.update_bar())
+
+        self.adjustment = self.term.get_vadjustment()
 
     def init_bar(self):
         self.bar = Gtk.Entry()
@@ -95,6 +97,7 @@ class Window(Gtk.Window):
             if not self.bar.has_focus():
                 if event.keyval in self.detached_mode_key_map:
                     self.detached_mode_key_map[event.keyval]()
+                    self.update_bar()
                 return True
         else:
             if (
@@ -148,21 +151,15 @@ class Window(Gtk.Window):
         }
 
     def scroll_term(self, line_count, page_count=0):
-        vadjustment = self.term.get_vadjustment()
-        current = vadjustment.get_value()
-        desired = current + line_count + page_count * vadjustment.get_page_size()
-        vadjustment.set_value(desired)
-        self.update_bar()
+        current = self.adjustment.get_value()
+        desired = current + line_count + page_count * self.adjustment.get_page_size()
+        self.adjustment.set_value(desired)
 
     def scroll_term_to_top(self):
-        vadjustment = self.term.get_vadjustment()
-        vadjustment.set_value(vadjustment.get_lower())
-        self.update_bar()
+        self.adjustment.set_value(self.adjustment.get_lower())
 
     def scroll_term_to_bottom(self):
-        vadjustment = self.term.get_vadjustment()
-        vadjustment.set_value(vadjustment.get_upper())
-        self.update_bar()
+        self.adjustment.set_value(self.adjustment.get_upper())
 
     def yank_line(self, trait):
         text, attributes = self.term.get_text()
@@ -193,17 +190,14 @@ class Window(Gtk.Window):
 
     def search_next(self):
         self.term.search_find_next()
-        self.update_bar()
 
     def search_previous(self):
         self.term.search_find_previous()
-        self.update_bar()
 
     def get_status_string(self):
-        vadjustment = self.term.get_vadjustment()
-        term_top = int(vadjustment.get_value())
-        term_bottom = term_top + int(vadjustment.get_page_size())
-        term_upper = int(vadjustment.get_upper())
+        term_top = int(self.adjustment.get_value())
+        term_bottom = term_top + int(self.adjustment.get_page_size())
+        term_upper = int(self.adjustment.get_upper())
         term_zoom = int(self.term.get_font_scale() * 100)
         return (
             f"{self.message} <{term_zoom}%> [{term_top}-{term_bottom}] ({term_upper})"
@@ -212,7 +206,6 @@ class Window(Gtk.Window):
     def zoom(self, delta):
         current = self.term.get_font_scale()
         self.term.set_font_scale(current + delta)
-        self.update_bar()
 
     def update_bar(self):
         self.bar.set_placeholder_text(self.get_status_string())
