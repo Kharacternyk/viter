@@ -19,7 +19,7 @@ class Window(Gtk.Window):
         self.connect("delete_event", Gtk.main_quit)
         self.connect("key_press_event", self.key_press_handler)
 
-        self.init_term(shell_argv)
+        self.init_term()
         self.init_bar()
         self.init_layout()
 
@@ -33,18 +33,11 @@ class Window(Gtk.Window):
         self.key_queue = []
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
-    def init_term(self, argv):
+        self.spawn(shell_argv)
+
+    def init_term(self):
         self.term = Vte.Terminal()
-        self.term.spawn_async(
-            Vte.PtyFlags.DEFAULT,
-            None,
-            argv,
-            None,
-            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-            None,
-            None,
-            -1,
-        )
+
         self.term.search_set_wrap_around(True)
         self.term.connect("eof", lambda a: self.close())
 
@@ -67,6 +60,18 @@ class Window(Gtk.Window):
         self.add(self.box)
         self.box.pack_start(self.term, True, True, 0)
         self.box.pack_start(self.bar, False, True, 0)
+
+    def spawn(self, argv):
+        self.term.spawn_async(
+            Vte.PtyFlags.DEFAULT,
+            None,
+            argv,
+            None,
+            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+            None,
+            None,
+            -1,
+        )
 
     def bar_focus_in_handler(self, widget, event):
         self.bar.set_alignment(0)
