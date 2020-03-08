@@ -12,7 +12,7 @@ git clone https://github.com/Kharacternyk/viter
 cd viter
 python3 viter.py
 ```
-To run a custom program, run `python3 viter.py /path/to/program`.
+To run a custom program, run `python3 viter.py /path/to/program [args]`.
 
 You may want either to give `viter.py` executable rights and link it from somewhere in your PATH or create a .desktop file for it.
 
