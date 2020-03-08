@@ -60,7 +60,7 @@ class Window(Gtk.Window):
         self.bar.connect("focus_in_event", self.bar_focus_in_handler)
         self.bar.set_alignment(1)
 
-        self.derive_bar_appearance()
+        self.bar.override_font(self.term.get_font())
 
     def init_layout(self):
         self.box = Gtk.VBox()
@@ -164,6 +164,10 @@ class Window(Gtk.Window):
     def scroll_term_to_bottom(self):
         self.adjustment.set_value(self.adjustment.get_upper())
 
+    def set_font(self, font):
+        self.term.set_font(font)
+        self.bar.override_font(font)
+
     def yank_line(self, trait):
         text, attributes = self.term.get_text()
         if isinstance(trait, int):
@@ -212,11 +216,6 @@ class Window(Gtk.Window):
 
     def update_bar(self):
         self.bar.set_placeholder_text(self.get_status_string())
-
-    def derive_bar_appearance(self):
-        # `override_font` is deprecated.
-        # Nothing like it is exposed instead though.
-        self.bar.override_font(self.term.get_font())
 
     def echo(self, obj):
         self.message = str(obj)

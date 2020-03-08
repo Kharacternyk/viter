@@ -3,10 +3,7 @@ win.term.set_audible_bell(False)
 win.term.set_scrollback_lines(2000)
 
 from gi.repository import Pango as _pango
-win.term.set_font(_pango.FontDescription("Monospace 12.5"))
-
-# Make the bar (status line) to look consistent with window.
-win.derive_bar_appearance()
+win.set_font(_pango.FontDescription("Monospace 12.5"))
 
 # Add the current time to the bar.
 _default_status_string_func = Window.get_status_string
