@@ -2,8 +2,8 @@
 
 import sys
 import os
-import gi
 import enum
+import gi
 
 gi.require_version("Gtk", "3.0")
 gi.require_version("Vte", "2.91")
@@ -110,15 +110,6 @@ class Window(Gtk.Window):
                 self.normal_mode_key_map[event.keyval]()
                 return True
 
-    def enter_normal_mode(self):
-        self.bar.hide()
-        self.mode = Mode.NORMAL
-
-    def enter_detached_mode(self):
-        self.update_bar()
-        self.bar.show()
-        self.mode = Mode.DETACHED
-
     def set_default_key_map(self):
         def prepare_bar(text_left, text_right=""):
             self.bar.grab_focus()
@@ -153,6 +144,15 @@ class Window(Gtk.Window):
             Gdk.KEY_V: (lambda: self.term.paste_clipboard()),
         }
 
+    def enter_normal_mode(self):
+        self.bar.hide()
+        self.mode = Mode.NORMAL
+
+    def enter_detached_mode(self):
+        self.update_bar()
+        self.bar.show()
+        self.mode = Mode.DETACHED
+
     def scroll_term(self, line_count, page_count=0):
         current = self.adjustment.get_value()
         desired = current + line_count + page_count * self.adjustment.get_page_size()
@@ -167,6 +167,10 @@ class Window(Gtk.Window):
     def set_font(self, font):
         self.term.set_font(font)
         self.bar.override_font(font)
+
+    def zoom(self, delta):
+        current = self.term.get_font_scale()
+        self.term.set_font_scale(current + delta)
 
     def yank_line(self, trait):
         text, attributes = self.term.get_text()
@@ -209,10 +213,6 @@ class Window(Gtk.Window):
         return (
             f"{self.message} <{term_zoom}%> [{term_top}-{term_bottom}] ({term_upper})"
         )
-
-    def zoom(self, delta):
-        current = self.term.get_font_scale()
-        self.term.set_font_scale(current + delta)
 
     def update_bar(self):
         self.bar.set_placeholder_text(self.get_status_string())
