@@ -38,6 +38,9 @@ You got the spirit, right? Vim users should feel at home.
     - `K`: one page up
     - `g`: to the beginning
     - `G`: to the end
+- Zooming
+    - `+`/`=`: make the font 25% larger
+    - `-`: make the font 25% smaller
 - Search
     - `/`+_pattern_+`Enter`: search for the first occurrence of _pattern_
     - `n`: to the next occurrence of previously set _pattern_

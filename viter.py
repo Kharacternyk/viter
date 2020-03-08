@@ -136,6 +136,9 @@ class Window(Gtk.Window):
             Gdk.KEY_n: (lambda: self.search_next()),
             Gdk.KEY_N: (lambda: self.search_previous()),
             Gdk.KEY_e: (lambda: prepare_bar("win.echo(", ")")),
+            Gdk.KEY_plus: (lambda: self.zoom(0.25)),
+            Gdk.KEY_equal: (lambda: self.zoom(0.25)),
+            Gdk.KEY_minus: (lambda: self.zoom(-0.25)),
         }
 
         self.normal_mode_key_map = {
@@ -201,7 +204,15 @@ class Window(Gtk.Window):
         term_top = int(vadjustment.get_value())
         term_bottom = term_top + int(vadjustment.get_page_size())
         term_upper = int(vadjustment.get_upper())
-        return f"{self.message} [{term_top}-{term_bottom}] ({term_upper})"
+        term_zoom = int(self.term.get_font_scale() * 100)
+        return (
+            f"{self.message} <{term_zoom}%> [{term_top}-{term_bottom}] ({term_upper})"
+        )
+
+    def zoom(self, delta):
+        current = self.term.get_font_scale()
+        self.term.set_font_scale(current + delta)
+        self.update_bar()
 
     def update_bar(self):
         self.bar.set_placeholder_text(self.get_status_string())
