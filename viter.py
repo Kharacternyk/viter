@@ -114,29 +114,29 @@ class Window(Gtk.Window):
                 self.normal_mode_key_map[event.keyval]()
                 return True
 
-    def set_default_key_map(self):
-        def prepare_bar(text_left, text_right=""):
-            self.bar.grab_focus()
-            Gtk.Entry.do_insert_at_cursor(self.bar, text_left + text_right)
-            Gtk.Entry.do_move_cursor(
-                self.bar, Gtk.MovementStep.LOGICAL_POSITIONS, -len(text_right), False
-            )
+    def prepare_bar(self, text_left, text_right=""):
+        self.bar.grab_focus()
+        Gtk.Entry.do_insert_at_cursor(self.bar, text_left + text_right)
+        Gtk.Entry.do_move_cursor(
+            self.bar, Gtk.MovementStep.LOGICAL_POSITIONS, -len(text_right), False
+        )
 
+    def set_default_key_map(self):
         self.detached_mode_key_map = {
             Gdk.KEY_colon: (lambda: self.bar.grab_focus()),
-            Gdk.KEY_slash: (lambda: prepare_bar('win.search("', '")')),
+            Gdk.KEY_slash: (lambda: self.prepare_bar('win.search("', '")')),
             Gdk.KEY_j: (lambda: self.scroll_term(1)),
             Gdk.KEY_k: (lambda: self.scroll_term(-1)),
             Gdk.KEY_J: (lambda: self.scroll_term(0, 1)),
             Gdk.KEY_K: (lambda: self.scroll_term(0, -1)),
             Gdk.KEY_g: (lambda: self.scroll_term_to_top()),
             Gdk.KEY_G: (lambda: self.scroll_term_to_bottom()),
-            Gdk.KEY_y: (lambda: prepare_bar('win.yank_line("', '")')),
+            Gdk.KEY_y: (lambda: self.prepare_bar('win.yank_line("', '")')),
             Gdk.KEY_Y: (lambda: self.yank_message()),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
             Gdk.KEY_n: (lambda: self.search_next()),
             Gdk.KEY_N: (lambda: self.search_previous()),
-            Gdk.KEY_e: (lambda: prepare_bar("win.echo(", ")")),
+            Gdk.KEY_e: (lambda: self.prepare_bar("win.echo(", ")")),
             Gdk.KEY_plus: (lambda: self.zoom(0.25)),
             Gdk.KEY_equal: (lambda: self.zoom(0.25)),
             Gdk.KEY_minus: (lambda: self.zoom(-0.25)),
