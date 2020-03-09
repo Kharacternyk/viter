@@ -16,6 +16,9 @@ def _custom_status_string(window):
 
 Window.get_status_string = _custom_status_string
 
+# Map space to exit DETACHED mode.
+win.detached_mode_key_map[Gdk.KEY_space] = lambda: win.enter_normal_mode()
+
 # Set a **LIGHT** color scheme.
 def _c(string):
     color = Gdk.RGBA()
