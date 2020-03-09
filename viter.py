@@ -30,7 +30,6 @@ class Window(Gtk.Window):
 
         self.mode = Mode.NORMAL
         self.message = ""
-        self.key_queue = []
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
         self.spawn(shell_argv)
