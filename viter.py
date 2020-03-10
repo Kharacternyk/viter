@@ -171,8 +171,8 @@ class Window(Gtk.Window):
             Gdk.KEY_y: (lambda: self.prepare_bar('win.yank_line("', '")')),
             Gdk.KEY_Y: (lambda: self.yank_message()),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
-            Gdk.KEY_n: (lambda: self.search_next()),
-            Gdk.KEY_N: (lambda: self.search_previous()),
+            Gdk.KEY_n: (lambda: self.term.search_find_next()),
+            Gdk.KEY_N: (lambda: self.term.search_find_previous()),
             Gdk.KEY_e: (lambda: self.prepare_bar("win.echo(", ")")),
             Gdk.KEY_plus: (lambda: self.zoom(0.25)),
             Gdk.KEY_equal: (lambda: self.zoom(0.25)),
@@ -248,12 +248,6 @@ class Window(Gtk.Window):
         regex = Vte.Regex.new_for_search(pattern, len(pattern), PCRE2_MULTILINE)
         self.term.search_set_regex(regex, 0)
         self.search_next()
-
-    def search_next(self):
-        self.term.search_find_next()
-
-    def search_previous(self):
-        self.term.search_find_previous()
 
     def get_status_string(self):
         term_top = int(self.adjustment.get_value())
