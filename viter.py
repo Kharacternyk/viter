@@ -61,7 +61,7 @@ class Window(Gtk.Window):
         self.box.pack_start(self.bar, False, True, 0)
 
     def spawn(self, argv):
-        self.term.spawn_async(
+        self.term.spawn_sync(
             Vte.PtyFlags.DEFAULT,
             None,
             argv,
@@ -69,7 +69,6 @@ class Window(Gtk.Window):
             GLib.SpawnFlags.DO_NOT_REAP_CHILD,
             None,
             None,
-            -1,
         )
 
     def bar_focus_in_handler(self, widget, event):
