@@ -136,8 +136,14 @@ class Window(Gtk.Window):
 
         obj = command[:last_dot_index]
         part = command[last_dot_index + 1 :]
+
+        try:
+            attributes = dir(eval(obj))
+        except NameError:
+            return
+
         possible_matches = [
-            attribute for attribute in dir(eval(obj)) if attribute.startswith(part)
+            attribute for attribute in attributes if attribute.startswith(part)
         ]
 
         if len(possible_matches) == 1:
