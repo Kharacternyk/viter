@@ -131,6 +131,7 @@ class Window(Gtk.Window):
             Gdk.KEY_K: (lambda: self.scroll_term(0, -1)),
             Gdk.KEY_g: (lambda: self.scroll_term_to_top()),
             Gdk.KEY_G: (lambda: self.scroll_term_to_bottom()),
+            Gdk.KEY_v: (lambda: self.prepare_bar('win.yank_block("', ")")),
             Gdk.KEY_y: (lambda: self.prepare_bar('win.yank_line("', '")')),
             Gdk.KEY_Y: (lambda: self.yank_message()),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
@@ -176,23 +177,32 @@ class Window(Gtk.Window):
         current = self.term.get_font_scale()
         self.term.set_font_scale(current + delta)
 
-    def yank_line(self, trait):
+    def yank_block(self, trait, count, preserve_identation=True):
         text, attributes = self.term.get_text()
-        if isinstance(trait, int):
-            line_number = trait
-            line = text.splitlines()[line_number].strip()
-            self.clipboard.set_text(line, -1)
-        elif isinstance(trait, str):
-            search_text = trait.strip()
-            lines = [
-                line
-                for line in text.splitlines()
+        search_text = trait.strip()
+        lines = text.splitlines()
+
+        if not preserve_identation:
+            lines = [line.strip() for line in lines]
+            first_line_candidates = [
+                num for num, line in enumerate(lines) if line.startswith(search_text)
+            ]
+        else:
+            first_line_candidates = [
+                num
+                for num, line in enumerate(lines)
                 if line.strip().startswith(search_text)
             ]
-            if lines != []:
-                self.clipboard.set_text(lines[-1].strip(), -1)
-            else:
-                self.message = "no such lines: " + search_text
+
+        if first_line_candidates != []:
+            first_line_num = first_line_candidates[0]
+            block = "\n".join(lines[first_line_num : first_line_num + count])
+            self.clipboard.set_text(block, -1)
+        else:
+            self.message = "no such lines: " + search_text
+
+    def yank_line(self, trait):
+        self.yank_block(trait, 1, False)
 
     def yank_message(self):
         self.clipboard.set_text(self.message, -1)

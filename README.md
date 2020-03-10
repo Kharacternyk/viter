@@ -46,7 +46,8 @@ You got the spirit, right? Vim users should feel at home.
     - `n`: to the next occurrence of previously set _pattern_
     - `N`: to the previous occurrence of previously set _pattern_
 - Clipboard
-    - `y`+_characters_+`Enter`: yank the last line that starts with the _characters_ (not counting whitespace)
+    - `y`+_characters_+`Enter`: yank the first line that starts with the _characters_ (not counting whitespace)
+    - `v`+_characters_+`",`+_count_+`Enter`: yank the block of _count_ lines, where the first line starts with the _characters_ (not counting whitespace)
     - `Y`: yank the message in the bar
     - `Ctrl+Shift+C`/`Ctrl+Shift+V`: copy/paste in **NORMAL** mode
 - Command line
