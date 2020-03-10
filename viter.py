@@ -61,15 +61,28 @@ class Window(Gtk.Window):
         self.box.pack_start(self.bar, False, True, 0)
 
     def spawn(self, argv):
-        self.term.spawn_sync(
-            Vte.PtyFlags.DEFAULT,
-            None,
-            argv,
-            None,
-            GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-            None,
-            None,
-        )
+        try:
+            self.term.spawn_async(
+                Vte.PtyFlags.DEFAULT,
+                None,
+                argv,
+                None,
+                GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                None,
+                None,
+                -1,
+            )
+        except AttributeError:
+            # See issue #1.
+            self.term.spawn_sync(
+                Vte.PtyFlags.DEFAULT,
+                None,
+                argv,
+                None,
+                GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                None,
+                None,
+            )
 
     def bar_focus_in_handler(self, widget, event):
         self.bar.set_alignment(0)
