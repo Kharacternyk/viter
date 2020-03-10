@@ -49,6 +49,7 @@ You got the spirit, right? Vim users should feel at home.
     - `y`+_characters_+`Enter`: yank the first line that starts with the _characters_ (not counting whitespace)
     - `v`+_characters_+`",`+_count_+`Enter`: yank the block of _count_ lines, where the first line starts with the _characters_ (not counting whitespace)
     - `Y`: yank the message in the bar
+    - `p`: paste
     - `Ctrl+Shift+C`/`Ctrl+Shift+V`: copy/paste in **NORMAL** mode
 - Command line
     - `:`+_command_+`Enter`: execute the _command_ in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)

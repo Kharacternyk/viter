@@ -170,6 +170,7 @@ class Window(Gtk.Window):
             Gdk.KEY_v: (lambda: self.prepare_bar('win.yank_block("', ")")),
             Gdk.KEY_y: (lambda: self.prepare_bar('win.yank_line("', '")')),
             Gdk.KEY_Y: (lambda: self.yank_message()),
+            Gdk.KEY_p: (lambda: self.term.paste_clipboard()),
             Gdk.KEY_Escape: (lambda: self.enter_normal_mode()),
             Gdk.KEY_n: (lambda: self.term.search_find_next()),
             Gdk.KEY_N: (lambda: self.term.search_find_previous()),
