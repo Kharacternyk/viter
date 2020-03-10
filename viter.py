@@ -98,7 +98,7 @@ class Window(Gtk.Window):
             self.term.grab_focus()
             return True
         if event.keyval == Gdk.KEY_Tab:
-            # This would be the place for the tab completion, if it existed.
+            self.try_autocomplete()
             return True
 
     def command_handler(self, widget):
@@ -125,6 +125,24 @@ class Window(Gtk.Window):
             ):
                 self.normal_mode_key_map[event.keyval]()
                 return True
+
+    def try_autocomplete(self):
+        command = self.bar.get_text()
+
+        try:
+            last_dot_index = command.rindex(".")
+        except ValueError:
+            return
+
+        obj = command[:last_dot_index]
+        part = command[last_dot_index + 1 :]
+        possible_matches = [
+            attribute for attribute in dir(eval(obj)) if attribute.startswith(part)
+        ]
+
+        if len(possible_matches) == 1:
+            self.bar.set_text("")
+            Gtk.Entry.do_insert_at_cursor(self.bar, obj + "." + possible_matches[-1])
 
     def prepare_bar(self, text_left, text_right=""):
         self.bar.grab_focus()
