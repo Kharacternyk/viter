@@ -244,11 +244,18 @@ class Window(Gtk.Window):
     def yank_message(self):
         self.clipboard.set_text(self.message, -1)
 
-    def search(self, pattern):
+    def search(self, pattern, caseless=True):
         PCRE2_MULTILINE = 0x00000400
-        regex = Vte.Regex.new_for_search(pattern, len(pattern), PCRE2_MULTILINE)
+        PCRE2_CASELESS = 0x00000008
+
+        if caseless:
+            flags = PCRE2_MULTILINE | PCRE2_CASELESS
+        else:
+            flags = PCRE2_MULTILINE
+
+        regex = Vte.Regex.new_for_search(pattern, len(pattern), flags)
         self.term.search_set_regex(regex, 0)
-        self.search_next()
+        self.term.search_find_next()
 
     def get_status_string(self):
         term_top = int(self.adjustment.get_value())
