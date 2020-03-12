@@ -102,7 +102,7 @@ To interact with the window one should use the ``win`` global variable. Actually
 * ``win.close()`` to close the window.
 * ``win.fullscreen()`` to make the window fullscreen.
 
-``win`` has ``term`` field that returns an instance of ``Vte.Terminal``. See the Gtk documentation on the ``Gtk.Window`` `there <https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Window.html>`_ and ``Vte.Terminal`` `there <https://lazka.github.io/pgi-docs/Vte-2.91/classes/Terminal.html>`_ to see what is possible to do with them. See the source of Viter to see what methods are additionally provided to that of ``Gtk.Window``.
+``win`` has ``term`` field that returns an instance of ``Vte.Terminal``. See the Gtk documentation on ``Gtk.Window`` `[1]`_ and ``Vte.Terminal`` `[2]`_  to see what is possible to do with them. See the source of Viter to see what methods are additionally provided to that of ``Gtk.Window``.
 
 =============
 Configuration
@@ -117,3 +117,6 @@ Viter looks for the configuration file in the following order:
 The first path that exists is read and then passed to ``exec`` function just before Viter enters the main loop. The configuration file must be a valid script that is executable by the same Python version that runs Viter.
 
 An example of a valid configuration file is in this repository and is named ``viterrc.py``. It is the configuration file that the author (@Kharacternyk) uses.
+
+.. _[1]: https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Window.html
+.. _[2]: https://lazka.github.io/pgi-docs/Vte-2.91/classes/Terminal.html
