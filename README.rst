@@ -45,41 +45,40 @@ Keybindings
 
 * Switching modes:
 
-    * ``Escape``\ : switch to **NORMAL** mode
-    * ``Ctrl-Shift-Space``\ : switch to **DETACHED** mode
+  * ``Escape``\ : switch to **NORMAL** mode
+  * ``Ctrl-Shift-Space``\ : switch to **DETACHED** mode
 
 * Navigating the scrollback
 
-    * ``j``\ : one line down
-    * ``k``\ : one line up
-    * ``J``\ : one page down
-    * ``K``\ : one page up
-    * ``g``\ : to the beginning
-    * ``G``\ : to the end
+  * ``j``\ : one line down
+  * ``k``\ : one line up
+  * ``J``\ : one page down
+  * ``K``\ : one page up
+  * ``g``\ : to the beginning
+  * ``G``\ : to the end
 
 * Zooming
 
-    * ``+``\ /\ ``=``\ : make the font 25% larger
-    * ``-``\ : make the font 25% smaller
+  * ``+``\ /\ ``=``\ : make the font 25% larger
+  * ``-``\ : make the font 25% smaller
 
 * Search
 
-    * ``/``\ +\ *pattern*\ +\ ``Enter``\ : search for the first occurrence of *pattern*
-    * ``n``\ : to the next occurrence of previously set *pattern*
-    * ``N``\ : to the previous occurrence of previously set *pattern*
+  * ``/``\ +\ *pattern*\ +\ ``Enter``\ : search for the first occurrence of *pattern*
+  * ``n``\ : to the next occurrence of previously set *pattern*
+  * ``N``\ : to the previous occurrence of previously set *pattern*
 
 * Clipboard
 
-    * ``y``\ +\ *characters*\ +\ ``Enter``\ : yank the first line that starts with the *characters* (not counting whitespace)
-    * ``v``\ +\ *characters*\ +\ ``",``\ +\ *count*\ +\ ``Enter``\ : yank the block of *count* lines, where the first line starts with the *characters* (not counting whitespace)
-    * ``Y``\ : yank the message in the bar
-    * ``p``\ : paste
-    * ``Ctrl+Shift+C``\ /\ ``Ctrl+Shift+V``\ : copy/paste in **NORMAL** mode
+  * ``y``\ +\ *characters*\ +\ ``Enter``\ : yank the first line that starts with the *characters* (not counting whitespace)
+  * ``v``\ +\ *characters*\ +\ ``",``\ +\ *count*\ +\ ``Enter``\ : yank the block of *count* lines, where the first line starts with the *characters* (not counting whitespace)
+  * ``Y``\ : yank the message in the bar
+  * ``p``\ : paste
+  * ``Ctrl+Shift+C``\ /\ ``Ctrl+Shift+V``\ : copy/paste in **NORMAL** mode
 
 * Command line
-
-    * ``:``\ +\ *command*\ +\ ``Enter``\ : execute the *command* in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
-    * ``e``\ +\ *expression*\ +\ ``Enter``\ : evaluate the Python *expression* and print it in the bar
+  * ``:``\ +\ *command*\ +\ ``Enter``\ : execute the *command* in the Python environment that executes the code of Viter (change the configuration of Viter on the fly)
+  * ``e``\ +\ *expression*\ +\ ``Enter``\ : evaluate the Python *expression* and print it in the bar
 
 Command interpreter
 ===================
