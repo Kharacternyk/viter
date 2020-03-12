@@ -141,6 +141,8 @@ class Window(Gtk.Window):
             attributes = dir(eval(obj))
         except NameError:
             return
+        except SyntaxError:
+            return
 
         possible_matches = [
             attribute for attribute in attributes if attribute.startswith(part)
