@@ -47,7 +47,7 @@ Keybindings
 * Switching modes:
 
   * ``Escape``: switch to **NORMAL** mode
-  * ``Ctrl-Shift-Space``: switch to **DETACHED** mode
+  * ``Ctrl+Shift+Space``: switch to **DETACHED** mode
 
 * Navigating the scrollback
 
