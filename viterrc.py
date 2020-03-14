@@ -1,6 +1,6 @@
 # Set some random options.
 win.term.set_audible_bell(False)
-win.term.set_scrollback_lines(2000)
+win.term.set_scrollback_lines(20000)
 
 from gi.repository import Pango
 win.set_font(Pango.FontDescription("Monospace 12.5"))
