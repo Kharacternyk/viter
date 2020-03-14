@@ -260,13 +260,11 @@ class Window(Gtk.Window):
         self.term.search_find_next()
 
     def get_status_string(self):
-        term_top = int(self.adjustment.get_value())
-        term_bottom = term_top + int(self.adjustment.get_page_size())
-        term_upper = int(self.adjustment.get_upper())
-        term_zoom = int(self.term.get_font_scale() * 100)
-        return (
-            f"{self.message} <{term_zoom}%> [{term_top}-{term_bottom}] ({term_upper})"
-        )
+        top = int(self.adjustment.get_value())
+        bottom = top + int(self.adjustment.get_page_size())
+        upper = int(self.adjustment.get_upper())
+        zoom = int(self.term.get_font_scale() * 100)
+        return f"{self.message} <{zoom}%> [{top}-{bottom}] ({upper})"
 
     def update_bar(self):
         self.bar.set_placeholder_text(self.get_status_string())
