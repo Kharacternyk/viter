@@ -1,7 +1,13 @@
-# Set some random options.
-win.term.set_audible_bell(False)
+# Bigger scrollback.
 win.term.set_scrollback_lines(20000)
 
+# Visual bell.
+win.term.set_audible_bell(False)
+def visual_bell(_):
+    win.echo('BELL')
+win.term.connect("bell", visual_bell)
+
+# Set font.
 from gi.repository import Pango
 win.set_font(Pango.FontDescription("Monospace 12.5"))
 
