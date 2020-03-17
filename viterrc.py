@@ -6,15 +6,8 @@ from gi.repository import Pango
 win.set_font(Pango.FontDescription("Monospace 12.5"))
 
 # Add the current time to the bar.
-default_status_string_func = Window.get_status_string
-
 from datetime import datetime
-
-def get_custom_status_string(window):
-    now = datetime.now().time().strftime("%H:%M")
-    return f"{default_status_string_func(window)} |{now}|"
-
-Window.get_status_string = get_custom_status_string
+win.bar_segments.append(lambda: datetime.now().time().strftime("|%H:%M|"))
 
 # Map space to exit DETACHED mode.
 win.detached_mode_key_map[Gdk.KEY_space] = lambda: win.enter_normal_mode()

@@ -27,6 +27,7 @@ class Window(Gtk.Window):
 
         self.bar.hide()
         self.set_default_key_map()
+        self.set_default_bar_segments()
 
         self.mode = Mode.NORMAL
         self.message = ""
@@ -264,15 +265,23 @@ class Window(Gtk.Window):
         self.term.search_set_regex(regex, 0)
         self.term.search_find_next()
 
-    def get_status_string(self):
-        top = int(self.adjustment.get_value())
-        bottom = top + int(self.adjustment.get_page_size())
-        upper = int(self.adjustment.get_upper())
-        zoom = int(self.term.get_font_scale() * 100)
-        return f"{self.message} <{zoom}%> [{top}-{bottom}] ({upper})"
+    def set_default_bar_segments(self):
+        def get_top():
+            return int(self.adjustment.get_value())
+
+        def get_bottom():
+            return get_top() + int(self.adjustment.get_value())
+
+        self.bar_segments = [
+            (lambda: f"{self.message}"),
+            (lambda: f"<{int(self.term.get_font_scale())*100}%>"),
+            (lambda: f"[{get_top()}-{get_bottom()}]"),
+            (lambda: f"({int(self.adjustment.get_upper())})"),
+        ]
 
     def update_bar(self):
-        self.bar.set_placeholder_text(self.get_status_string())
+        status_string = " ".join([f() for f in self.bar_segments])
+        self.bar.set_placeholder_text(status_string)
 
     def echo(self, obj):
         self.message = str(obj)
