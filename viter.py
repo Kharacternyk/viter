@@ -281,7 +281,7 @@ class Window(Gtk.Window):
 
         self.bar_segments = [
             (lambda: f"{self.message}"),
-            (lambda: f"<{int(self.term.get_font_scale()*100)}%>"),
+            (lambda: f"<{self.term.get_font_scale():.0%}>"),
             (lambda: f"[{get_top()}-{get_bottom()}]"),
             (lambda: f"({int(self.adjustment.get_upper())})"),
             (lambda: f"|{get_rows()}x{get_columns()}|"),
