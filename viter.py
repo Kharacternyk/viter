@@ -32,6 +32,7 @@ class Window(Gtk.Window):
         self.mode = Mode.NORMAL
         self.message = ""
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+        self.connect("size_allocate", lambda a, b: self.update_bar())
 
         self.spawn(shell_argv)
 
@@ -272,11 +273,18 @@ class Window(Gtk.Window):
         def get_bottom():
             return get_top() + int(self.adjustment.get_value())
 
+        def get_rows():
+            return win.term.get_row_count()
+
+        def get_columns():
+            return win.term.get_column_count()
+
         self.bar_segments = [
             (lambda: f"{self.message}"),
             (lambda: f"<{int(self.term.get_font_scale())*100}%>"),
             (lambda: f"[{get_top()}-{get_bottom()}]"),
             (lambda: f"({int(self.adjustment.get_upper())})"),
+            (lambda: f"|{get_rows()}x{get_columns()}|"),
         ]
 
     def update_bar(self):
