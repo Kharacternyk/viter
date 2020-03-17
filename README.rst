@@ -73,6 +73,7 @@ Keybindings
 
   * ``y`` *characters* ``Enter``: yank the first line that starts with the *characters* (not counting whitespace)
   * ``v`` *characters* ``",`` *count* ``Enter``: yank the block of *count* lines, where the first line starts with the *characters* (not counting whitespace)
+  * ``V``: yank the whole content of the window
   * ``Y``: yank the message in the bar
   * ``p``: paste
   * ``Ctrl+Shift+C``/``Ctrl+Shift+V``: copy/paste in **NORMAL** mode

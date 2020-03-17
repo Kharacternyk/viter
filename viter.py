@@ -169,6 +169,7 @@ class Window(Gtk.Window):
             Gdk.KEY_K: (lambda: self.scroll_term(0, -1)),
             Gdk.KEY_g: (lambda: self.scroll_term_to_top()),
             Gdk.KEY_G: (lambda: self.scroll_term_to_bottom()),
+            Gdk.KEY_V: (lambda: self.yank_all()),
             Gdk.KEY_v: (lambda: self.prepare_bar('win.yank_block("', ")")),
             Gdk.KEY_y: (lambda: self.prepare_bar('win.yank_line("', '")')),
             Gdk.KEY_Y: (lambda: self.yank_message()),
@@ -215,6 +216,10 @@ class Window(Gtk.Window):
     def zoom(self, delta):
         current = self.term.get_font_scale()
         self.term.set_font_scale(current + delta)
+
+    def yank_all(self):
+        text, attributes = self.term.get_text()
+        self.clipboard.set_text(text, -1)
 
     def yank_block(self, trait, count, preserve_identation=True):
         text, attributes = self.term.get_text()
