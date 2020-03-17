@@ -13,7 +13,7 @@ win.set_font(Pango.FontDescription("Monospace 12.5"))
 
 # Add the current time to the bar.
 from datetime import datetime
-win.bar_segments.append(lambda: datetime.now().time().strftime("|%H:%M|"))
+win.bar_segments.append(lambda: datetime.now().time().strftime("{%H:%M}"))
 
 # Map space to exit DETACHED mode.
 win.detached_mode_key_map[Gdk.KEY_space] = lambda: win.enter_normal_mode()
