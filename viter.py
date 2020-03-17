@@ -271,7 +271,7 @@ class Window(Gtk.Window):
             return int(self.adjustment.get_value())
 
         def get_bottom():
-            return get_top() + int(self.adjustment.get_value())
+            return get_top() + int(self.adjustment.get_page_size())
 
         def get_rows():
             return win.term.get_row_count()
