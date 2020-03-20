@@ -193,6 +193,7 @@ class Window(Gtk.Window):
 
     def enter_normal_mode(self):
         self.bar.hide()
+        self.scroll_term_to_bottom()
         self.mode = Mode.NORMAL
 
     def enter_detached_mode(self):
