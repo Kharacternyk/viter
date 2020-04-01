@@ -22,31 +22,48 @@ win.detached_mode_key_map[Gdk.KEY_space] = lambda: win.enter_normal_mode()
 win.prompt = '|>'
 win.detached_mode_key_map[Gdk.KEY_h] = lambda: win.search(win.prompt)
 
-# Set a **LIGHT** color scheme.
-def c(string):
-    color = Gdk.RGBA()
-    color.parse("#" + string)
-    return color
+if 'VITER_USE_PYWAL' in os.environ:
+    # Set pywal color scheme.
+    def c(string):
+        color = Gdk.RGBA()
+        color.parse(string)
+        return color
 
-win.term.set_colors(
-    c("000000"),
-    c("FFFFFF"),
-    [
+    with open("/home/nazar/.cache/wal/colors") as f:
+        wal = [c(line[:-1]) for line in f]
+
+
+    win.term.set_colors(
+        wal[7],
+        wal[0],
+        wal
+    )
+else:
+    # Set a **LIGHT** color scheme.
+    def c(string):
+        color = Gdk.RGBA()
+        color.parse("#" + string)
+        return color
+
+    win.term.set_colors(
         c("000000"),
-        c("8b0000"),
-        c("006400"),
-        c("808000"),
-        c("00008b"),
-        c("8b008b"),
-        c("008b8b"),
         c("FFFFFF"),
-        c("000000"),
-        c("8b0000"),
-        c("006400"),
-        c("808000"),
-        c("00008b"),
-        c("8b008b"),
-        c("008b8b"),
-        c("FFFFFF"),
-    ],
-)
+        [
+            c("000000"),
+            c("8b0000"),
+            c("006400"),
+            c("808000"),
+            c("00008b"),
+            c("8b008b"),
+            c("008b8b"),
+            c("FFFFFF"),
+            c("000000"),
+            c("8b0000"),
+            c("006400"),
+            c("808000"),
+            c("00008b"),
+            c("8b008b"),
+            c("008b8b"),
+            c("FFFFFF"),
+        ],
+    )
