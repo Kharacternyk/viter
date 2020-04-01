@@ -11,6 +11,8 @@ Viter is a terminal emulator written and expandable in Python. It features vim-l
 Installation
 ============
 
+An `AUR package`_ is available.
+
 Viter requires GTK, VTE and Python with bindings for GTK. On Arch you may want to run this:
 
 .. code-block:: bash
@@ -123,5 +125,7 @@ The first path that exists is read and then passed to ``exec`` function just bef
 
 An example of a valid configuration file is in this repository and is named ``viterrc.py``. It is the configuration file that the author (@Kharacternyk) uses.
 
+.. LINKS
+.. _AUR package: https://aur.archlinux.org/packages/viter-git/
 .. _[1]: https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Window.html
 .. _[2]: https://lazka.github.io/pgi-docs/Vte-2.91/classes/Terminal.html
