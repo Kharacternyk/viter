@@ -89,6 +89,7 @@ Keybindings
 
 * Clipboard
 
+  * ``c``: copy selected text
   * ``y`` *characters* ``Enter``:
     yank the first line that starts with the *characters* (not counting whitespace)
   * ``v`` *characters* ``",`` *count* ``Enter``:
