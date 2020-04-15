@@ -120,13 +120,15 @@ class Window(Gtk.Window):
                     self.update_bar()
                 return True
         else:
-            if (
-                event.state & Gdk.ModifierType.CONTROL_MASK > 0
-                and event.state & Gdk.ModifierType.SHIFT_MASK > 0
-                and event.keyval in self.normal_mode_key_map
-            ):
-                self.normal_mode_key_map[event.keyval]()
-                return True
+            if event.state & Gdk.ModifierType.SHIFT_MASK > 0:
+                if (
+                    event.state & Gdk.ModifierType.CONTROL_MASK > 0
+                    and event.keyval in self.normal_mode_key_map
+                ):
+                    self.normal_mode_key_map[event.keyval]()
+                    return True
+                elif event.keyval == Gdk.KEY_space:
+                    event.state, event.keyval = self.shift_space_remap
 
     def try_autocomplete(self):
         command = self.bar.get_text()
@@ -191,6 +193,8 @@ class Window(Gtk.Window):
             Gdk.KEY_C: (lambda: self.term.copy_clipboard_format(Vte.Format.TEXT)),
             Gdk.KEY_V: (lambda: self.term.paste_clipboard()),
         }
+
+        self.shift_space_remap = (Gdk.ModifierType.CONTROL_MASK, Gdk.KEY_u)
 
     def enter_normal_mode(self):
         self.bar.hide()
