@@ -19,7 +19,7 @@ win.bar_segments.append(lambda: datetime.now().time().strftime("{%H:%M}"))
 win.detached_mode_key_map[Gdk.KEY_space] = lambda: win.enter_normal_mode()
 
 # Map `h` to search for shell prompt.
-win.prompt = '|>'
+win.prompt = '\|>'
 win.detached_mode_key_map[Gdk.KEY_h] = lambda: win.search(win.prompt)
 
 if 'VITER_USE_PYWAL' in os.environ:
