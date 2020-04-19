@@ -287,10 +287,10 @@ class Window(Gtk.Window):
             return get_top() + int(self.adjustment.get_page_size())
 
         def get_rows():
-            return win.term.get_row_count()
+            return self.term.get_row_count()
 
         def get_columns():
-            return win.term.get_column_count()
+            return self.term.get_column_count()
 
         self.bar_segments = [
             (lambda: f"{self.message}"),
