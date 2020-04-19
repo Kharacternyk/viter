@@ -3,6 +3,7 @@
 import sys
 import os
 import enum
+import fileinput
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -14,7 +15,7 @@ Mode = enum.Enum("Mode", ["NORMAL", "DETACHED"])
 
 
 class Window(Gtk.Window):
-    def __init__(self, shell_argv):
+    def __init__(self, argv, is_pager=False):
         Gtk.Window.__init__(self, title="viter")
         self.connect("delete_event", Gtk.main_quit)
         self.connect("key_press_event", self.key_press_handler)
@@ -34,7 +35,10 @@ class Window(Gtk.Window):
         self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         self.connect("size_allocate", lambda a, b: self.update_bar())
 
-        self.spawn(shell_argv)
+        if is_pager:
+            self.page(argv)
+        else:
+            self.spawn(argv)
 
     def init_term(self):
         self.term = Vte.Terminal()
@@ -61,6 +65,9 @@ class Window(Gtk.Window):
         self.add(self.box)
         self.box.pack_start(self.term, True, True, 0)
         self.box.pack_start(self.bar, False, True, 0)
+
+    def page(self, argv):
+        self.term.feed("\r".join(fileinput.input()).encode("utf-8"))
 
     def spawn(self, argv):
         try:
@@ -302,10 +309,11 @@ class Window(Gtk.Window):
 
 
 if __name__ == "__main__":
+    is_pager = os.path.basename(sys.argv[0]) == "viter-pager"
     child_argv = sys.argv[1:]
     if child_argv == []:
         child_argv = [os.environ["SHELL"]]
-    win = Window(child_argv)
+    win = Window(child_argv, is_pager)
 
     if "VITER_CONFIG" in os.environ:
         config_path = os.environ["VITER_CONFIG"]
