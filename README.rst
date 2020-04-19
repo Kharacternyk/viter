@@ -141,10 +141,10 @@ See the source of Viter to see what methods are additionally provided to that of
 Pager mode
 ==========
 
-If Viter is invoked using name ($0) ``viter-pager``, Viter acts as a pager.
+If Viter is invoked using name (``$0``) ``viter-pager``, Viter acts as a pager.
 It starts up directly into **DETACHED** mode.
-If there is no arguments, stdin is read, otherwise arguments are interpreted as file names
-and the contents are concatenated.
+If there is no arguments, ``stdin`` is read,
+otherwise the arguments are interpreted as file names and the contents are concatenated.
 
 =============
 Configuration
