@@ -137,6 +137,15 @@ See the Gtk documentation on ``Gtk.Window`` `[1]`_ and ``Vte.Terminal`` `[2]`_
 to see what is possible to do with them.
 See the source of Viter to see what methods are additionally provided to that of ``Gtk.Window``.
 
+==========
+Pager mode
+==========
+
+If Viter is invoked using name ($0) ``viter-pager``, Viter acts as a pager.
+It starts up directly into **DETACHED** mode.
+If there is no arguments, stdin is read, otherwise arguments are interpreted as file names
+and the contents are concatenated.
+
 =============
 Configuration
 =============
