@@ -23,7 +23,7 @@ An `AUR package`_ is available.
 Manual installation
 ~~~~~~~~~~~~~~~~~~~
 
-Viter requires GTK, VTE and Python with bindings for GTK.
+Viter requires VTE and Python with bindings to GTK.
 On Arch you may want to run this:
 
 .. code-block:: bash
