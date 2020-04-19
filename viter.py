@@ -68,6 +68,7 @@ class Window(Gtk.Window):
 
     def page(self, argv):
         self.term.feed("\r".join(fileinput.input()).encode("utf-8"))
+        self.enter_detached_mode()
 
     def spawn(self, argv):
         try:
