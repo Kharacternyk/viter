@@ -27,7 +27,7 @@ On Arch you may want to run this:
 
 .. code-block:: bash
 
-   sudo pacman -Syu --needed python-gobject gtk3 vte3
+   sudo pacman -Syu --needed python-gobject vte3
 
 Clone this repository. Run ``viter.py`` script to start Viter.
 
