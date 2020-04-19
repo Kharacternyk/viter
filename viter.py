@@ -136,7 +136,9 @@ class Window(Gtk.Window):
                 ):
                     self.normal_mode_key_map[event.keyval]()
                     return True
-                elif event.keyval == Gdk.KEY_space:
+                elif (
+                    event.keyval == Gdk.KEY_space and self.shift_space_remap is not None
+                ):
                     event.state, event.keyval = self.shift_space_remap
 
     def try_autocomplete(self):
@@ -203,7 +205,7 @@ class Window(Gtk.Window):
             Gdk.KEY_V: (lambda: self.term.paste_clipboard()),
         }
 
-        self.shift_space_remap = (Gdk.ModifierType.CONTROL_MASK, Gdk.KEY_u)
+        self.shift_space_remap = None
 
     def enter_normal_mode(self):
         self.bar.hide()

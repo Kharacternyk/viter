@@ -22,6 +22,9 @@ win.detached_mode_key_map[Gdk.KEY_space] = lambda: win.enter_normal_mode()
 win.prompt = '\|>'
 win.detached_mode_key_map[Gdk.KEY_h] = lambda: win.search(win.prompt)
 
+# Map Shift+Space to Ctrl+U ((neo)vi(m)).
+win.shift_space_remap = Gdk.ModifierType.CONTROL_MASK, Gdk.KEY_u
+
 if 'VITER_USE_PYWAL' in os.environ:
     # Set pywal color scheme.
     def c(string):
