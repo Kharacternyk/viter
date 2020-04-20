@@ -67,9 +67,16 @@ class Window(Gtk.Window):
         self.box.pack_start(self.bar, False, True, 0)
 
     def page(self, argv):
+        # The terminal doesn't report its scroll position until it's drawn.
+        # We connect an one-time handler.
+        def scroll_to_top(*args):
+            self.scroll_term_to_top()
+            self.term.disconnect_by_func(scroll_to_top)
+
         self.term.feed("\r".join(fileinput.input()).encode("utf-8"))
         self.enter_detached_mode()
         self.term.set_cursor_blink_mode(Vte.CursorBlinkMode.OFF)
+        self.term.connect("draw", scroll_to_top)
 
     def spawn(self, argv):
         try:
