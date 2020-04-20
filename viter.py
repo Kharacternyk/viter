@@ -36,8 +36,10 @@ class Window(Gtk.Window):
         self.connect("size_allocate", lambda a, b: self.update_bar())
 
         if is_pager:
+            self.is_pager = True
             self.page(argv)
         else:
+            self.is_pager = False
             self.spawn(argv)
 
     def init_term(self):
