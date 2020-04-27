@@ -23,24 +23,24 @@ An `AUR package`_ is available.
 Manual installation
 ~~~~~~~~~~~~~~~~~~~
 
-Viter requires VTE and Python with bindings to GTK.
+Viter requires VTE and PyGObject.
 On Arch you may want to run this:
 
 .. code-block:: bash
 
    sudo pacman -Syu --needed python-gobject vte3
 
-Clone this repository. Run ``viter.py`` script to start Viter.
+Clone this repository. Run ``viter.py`` to start Viter.
 
 .. code-block:: bash
 
    git clone https://github.com/Kharacternyk/viter
    cd viter
-   python3 viter.py
+   ./viter.py
 
-To run a custom program, run ``python3 viter.py /path/to/program [args]``.
+To run a custom program, run ``./viter.py /path/to/program [args]``.
 
-You may want either to give ``viter.py`` executable rights and link it from
+You may want either link ``viter.py`` from
 somewhere in your PATH or create a .desktop file for it.
 
 =====
