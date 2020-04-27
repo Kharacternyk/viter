@@ -77,6 +77,7 @@ class Window(Gtk.Window):
 
         self.term.feed("\r".join(fileinput.input()).encode("utf-8"))
         self.enter_detached_mode()
+        self.enter_normal_mode = lambda: None
         self.term.set_cursor_blink_mode(Vte.CursorBlinkMode.OFF)
         self.term.connect("draw", scroll_to_top)
 
