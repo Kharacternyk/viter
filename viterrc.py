@@ -1,18 +1,31 @@
+from gi.repository import Pango
+from datetime import datetime
+
 # Bigger scrollback.
 win.term.set_scrollback_lines(20000)
 
 # Visual bell.
 win.term.set_audible_bell(False)
-def visual_bell(_):
-    win.echo('BELL')
-win.term.connect("bell", visual_bell)
+win.last_bell = None
+
+def bell_handler(_):
+    win.last_bell = datetime.now()
+win.term.connect("bell", bell_handler)
+
+def display_bell():
+    if win.last_bell is not None:
+        delta = datetime.now() - win.last_bell
+        delta_seconds = int(delta.total_seconds())
+        if delta_seconds <= 10:
+            return '*' * (10 - delta_seconds)
+    return ""
+
+win.bar_segments.insert(1, display_bell)
 
 # Set font.
-from gi.repository import Pango
 win.set_font(Pango.FontDescription("Monospace 12.5"))
 
 # Add the current time to the bar.
-from datetime import datetime
 win.bar_segments.append(lambda: datetime.now().time().strftime("{%H:%M}"))
 
 # Map space to exit DETACHED mode.
