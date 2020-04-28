@@ -147,6 +147,14 @@ It starts up directly into **DETACHED** mode.
 If there is no arguments, ``stdin`` is read,
 otherwise the arguments are interpreted as file names and the contents are concatenated.
 
+You may want to pre-process the input. Here are some examples:
+
+* ``pygmentize | viter-pager`` — highlight the syntax.
+* ``ul | viter-pager`` — convert overstriking to properly underlined text.
+
+If you want to use Viter as your ``MANPAGER`` make sure to cook the input using ``ul`` first.
+The pages will lose formating (underlining, bold text) otherwise.
+
 =============
 Configuration
 =============
