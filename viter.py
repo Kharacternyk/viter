@@ -327,6 +327,8 @@ if __name__ == "__main__":
     child_argv = sys.argv[1:]
     if child_argv == []:
         child_argv = [os.environ["SHELL"]]
+    else:
+        child_argv.insert(0, "/usr/bin/env")
     win = Window(child_argv, is_pager)
 
     if "VITER_CONFIG" in os.environ:
