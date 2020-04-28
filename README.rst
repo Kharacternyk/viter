@@ -38,7 +38,7 @@ Clone this repository. Run ``viter.py`` to start Viter.
    cd viter
    ./viter.py
 
-To run a custom program, run ``./viter.py /path/to/program [args]``.
+To run a custom program, run ``./viter.py program [args]``.
 
 You may want either link ``viter.py`` from
 somewhere in your PATH or create a .desktop file for it.
