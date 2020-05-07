@@ -1,6 +1,9 @@
 from gi.repository import Pango
 from datetime import datetime
 
+# Set font.
+win.set_font(Pango.FontDescription("Monospace 12.5"))
+
 # Bigger scrollback.
 win.term.set_scrollback_lines(20000)
 
@@ -21,9 +24,6 @@ def display_bell():
     return ""
 
 win.bar_segments.insert(1, display_bell)
-
-# Set font.
-win.set_font(Pango.FontDescription("Monospace 12.5"))
 
 # Add the current time to the bar.
 win.bar_segments.append(lambda: datetime.now().time().strftime("{%H:%M}"))
