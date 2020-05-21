@@ -45,15 +45,8 @@ if 'VITER_USE_PYWAL' in os.environ:
         color.parse(string)
         return color
 
-    with open("/home/nazar/.cache/wal/colors") as f:
-        wal = [c(line[:-1]) for line in f]
-
-
-    win.term.set_colors(
-        wal[7],
-        wal[0],
-        wal
-    )
+    with open("/home/nazar/.cache/wal/sequences", 'rb') as f:
+        win.term.feed(f.read())
 else:
     # Set a **LIGHT** color scheme.
     def c(string):
