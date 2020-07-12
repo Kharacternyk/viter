@@ -169,10 +169,12 @@ The first path that exists is read and then passed to ``exec`` function just bef
 Viter enters the main loop. The configuration file must be a valid script that is
 executable by the same Python version that runs Viter.
 
-An example of a valid configuration file is in this repository and is named ``viterrc.py``.
-It is the configuration file that the author (@Kharacternyk) uses.
+See an example of a valid configuration file here_.
+It is the configuration file that the author (Kharacternyk_) uses.
 
 .. LINKS
 .. _AUR package: https://aur.archlinux.org/packages/viter-git/
 .. _[1]: https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Window.html
 .. _[2]: https://lazka.github.io/pgi-docs/Vte-2.91/classes/Terminal.html
+.. _here: https://github.com/Kharacternyk/dotfiles/blob/master/.config/viter/viterrc.py
+.. _Kharacternyk: https://github.com/Kharacternyk
