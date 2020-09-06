@@ -72,8 +72,8 @@ Keybindings
 
   * ``j``: one line down
   * ``k``: one line up
-  * ``J``: one page down
-  * ``K``: one page up
+  * ``J``: half page down
+  * ``K``: half page up
   * ``g``: to the beginning
   * ``G``: to the end
 
