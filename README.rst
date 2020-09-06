@@ -84,7 +84,7 @@ Keybindings
 
 * Search
 
-  * ``/`` *pattern* ``Enter``: search for the first occurrence of *pattern*
+  * ``/`` *pattern* ``Enter``: set search pattern to *pattern*
   * ``n``: to the next occurrence of previously set *pattern*
   * ``N``: to the previous occurrence of previously set *pattern*
 

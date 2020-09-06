@@ -291,7 +291,6 @@ class Window(Gtk.Window):
 
         regex = Vte.Regex.new_for_search(pattern, len(pattern), flags)
         self.term.search_set_regex(regex, 0)
-        self.term.search_find_next()
 
     def set_default_bar_segments(self):
         def get_top():
