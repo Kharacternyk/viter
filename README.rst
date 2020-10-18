@@ -1,14 +1,7 @@
 .. image:: screenshot.png
 
-*Viter in DETACHED mode (GTK theme: dark Adwaita, colorscheme: default "Linux colors").
-Notice the status bar at the bottom of the window.*
-
 Viter is a terminal emulator written and expandable in Python.
-It features vim-like modes, keybindings, status line and can act like a pager
-(e.g. alernative to ``less``, ``more``, ``most``, etc).
-Viter is mainly inspired by `Termite <https://github.com/thestinger/termite>`_ and
-uses GTK+ VTE widget as the backend (like Termite) though it doesn't require any
-patches to VTE (`unlike Termite <https://github.com/thestinger/termite#dependencies>`_).
+It features Vim-like modes, key bindings, and status line and can act like a pager.
 
 .. contents:: Navigation:
    :backlinks: none
@@ -17,50 +10,34 @@ patches to VTE (`unlike Termite <https://github.com/thestinger/termite#dependenc
 Installation
 ============
 
-An `AUR package`_ is available.
+~~~
+AUR
+~~~
+
+Install the ``viter-git`` `AUR package`_.
 
 ~~~~~~~~~~~~~~~~~~~
 Manual installation
 ~~~~~~~~~~~~~~~~~~~
 
-Viter requires VTE and PyGObject.
-On Arch you may want to run this:
-
-.. code-block:: bash
-
-   sudo pacman -Syu --needed python-gobject vte3
-
-Clone this repository. Run ``viter.py`` to start Viter.
-
-.. code-block:: bash
-
-   git clone https://github.com/Kharacternyk/viter
-   cd viter
-   ./viter.py
-
-To run a custom program, run ``./viter.py program [args]``.
-
-You may want either link ``viter.py`` from
-somewhere in your PATH or create a .desktop file for it.
+Viter requires VTE and PyGObject. They are packaged as ``python-gobject`` and ``vte3`` on
+Arch. Look for similarly named packages if you use another GNU/Linux distribution.
 
 =====
 Usage
 =====
 
+Run ``viter`` to launch the default shell in Viter. Run ``viter program [args]`` to launch
+``program`` in Viter with ``[args]`` (may be empty). Substitute ``viter`` for
+``/path/to/this/repo/viter.py`` if you didn't use AUR to install Viter.
+
 Viter starts up in **NORMAL** mode where it behaves just like any other terminal emulator.
-Press ``Ctrl+Shift+Space`` to switch to **DETACHED** mode and then either:
-
-* Press ``j`` or ``k`` to access the scrollback.
-* Notice a nice status line at the bottom of the window.
-* Press ``y`` to copy some text.
-* Press ``:`` to access the one-line Python interpreter and interact with Viter.
-* Use any of the other awesome features of Viter.
-* Press ``Escape`` to switch back to **NORMAL** mode.
-
-You got the spirit, right? Vim users should feel at home.
+Press ``Ctrl+Shift+Space`` to switch to **DETACHED** mode and access most of the features
+(see `Key bindings`_ and `Command interpreter`_). Press ``Escape`` to return to **NORMAL**
+mode.
 
 ===========
-Keybindings
+Key bindings
 ===========
 
 * Switching modes:
@@ -84,19 +61,19 @@ Keybindings
 
 * Search
 
-  * ``/`` *pattern* ``Enter``: set search pattern to *pattern*
-  * ``n``: to the next occurrence of previously set *pattern*
-  * ``N``: to the previous occurrence of previously set *pattern*
+  * ``/`` *pattern* ``Enter``: set the search pattern to *pattern*
+  * ``n``: to the next occurrence of the search pattern
+  * ``N``: to the previous occurrence of the search pattern
 
 * Clipboard
 
   * ``c``: copy selected text
   * ``y`` *characters* ``Enter``:
-    yank the first line that starts with the *characters* (not counting whitespace)
+    yank the first line that starts with *characters* (not counting whitespace)
   * ``v`` *characters* ``",`` *count* ``Enter``:
-    yank the block of *count* lines, where the first line starts with the *characters*
+    yank the block of *count* lines, where the first line starts with *characters*
     (not counting whitespace)
-  * ``V``: yank the whole content of the window
+  * ``V``: yank the whole window
   * ``Y``: yank the message in the bar
   * ``p``: paste
   * ``Ctrl+Shift+C``/``Ctrl+Shift+V``: copy/paste in **NORMAL** mode
@@ -104,55 +81,54 @@ Keybindings
 * Command line
 
   * ``:`` *command* ``Enter``:
-    execute the *command* in the Python environment that executes the code of Viter
-    (change the configuration of Viter on the fly)
-  * ``e`` *expression* ``Enter``: evaluate the Python *expression* and print it in the bar
+    execute *command* in the Python environment that executes the code of Viter
+  * ``e`` *expression* ``Enter``: evaluate *expression* and print the result in the bar
 
 ===================
 Command interpreter
 ===================
 
-The bar at the bottom of the screen is shown when the user is in **DETACHED** mode.
-It shows some information, such as the total amount of the scrollback, while being unfocused.
+A status bar at the bottom of the window is shown when the user is in **DETACHED** mode.
+It displays data in the format of
+``<Zoom> [TopLineNum-BottomLineNum] (TotalLines) |TerminalHeightxTerminalWidth|`` while
+being unfocused.
 
-After the user had typed some text into it and then pressed ``Enter``,
-the entered text is executed by Viter using ``exec`` (a Python built-in).
+After the user typed some text into it and pressed ``Enter``, the entered text is
+executed by Viter using ``exec`` (a Python built-in).
 
-To interact with the window one should use the ``win`` global variable.
-Actually, the only thing that some keybindings do is inserting the call to one of the methods
-of ``win`` in the bar, for example:
+Use the ``win`` global variable to interact with the window. Some key bindings insert a
+call to one of the methods of ``win``, for example:
 
 * ``/`` inserts ``win.search("")`` and places the cursor between "".
 * ``y`` inserts ``win.yank_line("")`` and places the cursor between "".
 * ``e`` inserts ``win.echo()`` and places the cursor between ().
 
-``win`` is an instance of ``Window`` class that inherits ``Gtk.Window``.
-The calls to the inherited methods are also perfectly valid, for example:
+``win`` is an instance of the ``Window`` class that inherits ``Gtk.Window``.
+Calls to the inherited methods are also valid, for example:
 
 * ``win.set_title("Terminal")`` to set the title of the window to *Terminal*.
 * ``win.close()`` to close the window.
 * ``win.fullscreen()`` to make the window fullscreen.
 
-``win`` has ``term`` field that returns an instance of ``Vte.Terminal``.
-See the Gtk documentation on ``Gtk.Window`` `[1]`_ and ``Vte.Terminal`` `[2]`_ 
-to see what is possible to do with them.
-See the source of Viter to see what methods are additionally provided to that of ``Gtk.Window``.
+``win`` has the ``term`` field of type ``Vte.Terminal``. See the Gtk documentation on
+``Gtk.Window`` `[1]`_ and ``Vte.Terminal`` `[2]`_ for the full list of the methods and
+fields. See the source of Viter to see the methods that are provided additionally to that
+of ``Gtk.Window``.
 
 ==========
 Pager mode
 ==========
 
-If Viter is invoked using name (``$0``) ``viter-pager``, Viter acts as a pager.
-It starts up directly into **DETACHED** mode.
-If there is no arguments, ``stdin`` is read,
-otherwise the arguments are interpreted as file names and the contents are concatenated.
+If Viter is invoked as ``viter-pager``, Viter acts like a pager.  It starts up directly
+into **DETACHED** mode. If there is no arguments, ``stdin`` is read, otherwise the
+arguments are interpreted as file names.
 
-You may want to pre-process the input. Here are some examples:
+Here are some examples of preprocessing the input:
 
-* ``pygmentize | viter-pager`` — highlight the syntax.
-* ``ul | viter-pager`` — convert overstriking to properly underlined text.
+* ``pygmentize | viter-pager`` — syntax highlighting.
+* ``ul | viter-pager`` — converting overstriking to properly underlined text.
 
-If you want to use Viter as your ``MANPAGER`` make sure to cook the input using ``ul`` first.
+If you want to use Viter as your ``$MANPAGER``, make sure to cook the input via ``ul``.
 The pages will lose formating (underlining, bold text) otherwise.
 
 =============
@@ -165,12 +141,10 @@ Viter looks for the configuration file in the following order:
 * ``$XDG_CONFIG_HOME/viter/viterrc.py``
 * ``$HOME/.config/viter/viterrc.py``
 
-The first path that exists is read and then passed to ``exec`` function just before
-Viter enters the main loop. The configuration file must be a valid script that is
-executable by the same Python version that runs Viter.
+The first file that exists is read and then passed to ``exec`` just before Viter enters
+the main loop. The file must be a valid Python script.
 
-See an example of a valid configuration file here_.
-It is the configuration file that the author (Kharacternyk_) uses.
+See an example of the configuration file here_.
 
 .. LINKS
 .. _AUR package: https://aur.archlinux.org/packages/viter-git/
