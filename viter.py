@@ -88,7 +88,7 @@ class Window(Gtk.Window):
                 None,
                 argv,
                 None,
-                GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                0,
                 None,
                 None,
                 -1,
